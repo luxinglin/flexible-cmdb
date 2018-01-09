@@ -2,12 +2,11 @@ package movies.spring.data.neo4j.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.neo4j.ogm.annotation.GraphId;
+import movies.spring.data.neo4j.common.constants.CiRelationConstant;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 业务系统类
@@ -17,23 +16,29 @@ import java.util.List;
  */
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @NodeEntity
-public class BizSystem {
-
-    @GraphId
-    private Long id;
+public class NodeOfBizSystem extends AbstractEntity {
+    /**
+     * 名称
+     */
     private String name;
+    /**
+     * 编码
+     */
     private String code;
+    /**
+     * 系统描述
+     */
     private String bizSystemDesc;
-    @Relationship(type = "RELEATED_TO", direction = Relationship.INCOMING)
-    private List<Person> personList = new ArrayList<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    /**
+     * 归属于xx人管理
+     */
+    @Relationship(type = CiRelationConstant.BELONG_TO)
+    private Set<RelationOfBelongTo> personSet;
+    /**
+     * 部署在xx服务器上
+     */
+    @Relationship(type = CiRelationConstant.DEPLOY_ON)
+    private Set<RelationOfDeployOn> serverSet;
 
     public String getName() {
         return name;
@@ -59,11 +64,19 @@ public class BizSystem {
         this.bizSystemDesc = bizSystemDesc;
     }
 
-    public List<Person> getPersonList() {
-        return personList;
+    public Set<RelationOfBelongTo> getPersonSet() {
+        return personSet;
     }
 
-    public void setPersonList(List<Person> personList) {
-        this.personList = personList;
+    public void setPersonSet(Set<RelationOfBelongTo> personSet) {
+        this.personSet = personSet;
+    }
+
+    public Set<RelationOfDeployOn> getServerSet() {
+        return serverSet;
+    }
+
+    public void setServerSet(Set<RelationOfDeployOn> serverSet) {
+        this.serverSet = serverSet;
     }
 }

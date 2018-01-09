@@ -1,54 +1,65 @@
 package movies.spring.data.neo4j.domain;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Mark Angrish
  */
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @NodeEntity
 public class Person {
 
-	@GraphId
-	private Long id;
+    @GraphId
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private int born;
+    private int born;
 
-	@Relationship(type = "ACTED_IN")
-	private List<Movie> movies = new ArrayList<>();
+    @Relationship(type = "ACTED_IN")
+    private List<Movie> movies = new ArrayList<>();
 
-	public Person() {
-	}
+    @Relationship(type = "OWNED")
+    private Set<RelationOfOwned> ciSet;
 
-	public Person(String name) {
+    public Person() {
+    }
 
-		this.name = name;
-	}
+    public Person(String name) {
 
-	public Long getId() {
-		return id;
-	}
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public int getBorn() {
-		return born;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public List<Movie> getMovies() {
-		return movies;
-	}
+    public int getBorn() {
+        return born;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public Set<RelationOfOwned> getCiSet() {
+        return ciSet;
+    }
+
+    public void setCiSet(Set<RelationOfOwned> ciSet) {
+        this.ciSet = ciSet;
+    }
 }
