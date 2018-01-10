@@ -1,0 +1,238 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <title>Haier CMDB</title>
+</head>
+
+<body>
+
+<div role="navigation" class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header col-sm-4 col-md-4">
+                <div class="logo-well">
+                    <a href="#">
+                        <img src="assets/img/CMDB.svg" alt="Neo4j World's Leading Graph Database" id="logo">
+                    </a>
+                </div>
+                <div class="navbar-brand">
+                    <div class="brand">Haier CMDB</div>
+                </div>
+            </div>
+            <div class="navbar-header col-sm-4 col-md-4" style="padding-top: 15px;">
+                <a href="ci.html">配置项</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="ci-relation.html">关系图</a>
+            </div>
+
+            <div class="col-sm-4 col-md-4">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <form role="search" class="navbar-form" id="search">
+                            <div class="form-group">
+                                <input type="text" value="系统" placeholder="Search for Movie Title" class="form-control"
+                                       name="search">
+                            </div>
+                            <button class="btn btn-default" type="submit">Search</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="graph" class="row">
+</div>
+
+
+<style type="text/css">
+    .node {
+        stroke: #222;
+        stroke-width: 1.5px;
+    }
+
+    .node.BIZSYSTEM {
+        fill: #287d88;
+    }
+
+    .node.PERSON {
+        background: url(assets/img/system.svg);
+        fill: #bb385a;
+    }
+
+    .node.SERVER {
+        background: url(assets/img/system.svg);
+        fill: #bb93a6;
+    }
+
+    .link {
+        stroke: #666199;
+        stroke-opacity: .6;
+        stroke-width: 1px;
+    }
+
+    .labeltext {
+        font-size: 16px;
+        font-family: SimSun;
+        fill: #000000;
+    }
+
+    .nodetext {
+        font-size: 8px;
+        font-family: SimSun;
+        fill: #41212e;
+    }
+
+    .linetext {
+        font-size: 12px;
+        font-family: SimSun;
+        fill: #0000FF;
+        fill-opacity: 0.0;
+    }
+</style>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+
+    });
+</script>
+<script type="text/javascript">
+    var width = 800, height = 800;
+
+    var svg = d3.select("#graph").append("svg")
+        .attr("width", "100%").attr("height", "100%")
+        .attr("pointer-events", "all");
+
+    d3.json("/bizSystem/graph", function (error, graph) {
+        drawGraph(error, graph);
+    });
+
+    function drawGraph(error, graph) {
+        if (error) return;
+
+        var force = d3.layout.force()
+            .charge(-200).linkDistance(150).size([width, height]);
+
+        force.nodes(graph.nodes).links(graph.links).start();
+
+        var link = svg.selectAll(".link")
+            .data(graph.links).enter()
+            .append("line").attr("class", "link").style("stroke", "#14040d")
+            .style("stroke-width", 1);
+
+        var edges_text = svg.selectAll(".linetext")
+            .data(graph.links)
+            .enter()
+            .append("text")
+            .attr("class", "linetext")
+            .text(function (d) {
+                return d.relation;
+            });
+
+        var img_w = 40;
+        var img_h = 40;
+        var node = svg.selectAll("image")
+            .data(graph.nodes).enter()
+            .append("image")
+            .attr("width", img_w)
+            .attr("height", img_h)
+            .attr("xlink:href", function (d) {
+                return d.image;
+            }).on("mouseover", function (d, i) {
+                //显示连接线上的文字
+                edges_text.style("fill-opacity", function (edge) {
+                    if (edge.source === d || edge.target === d) {
+                        return 1.0;
+                    }
+                });
+            })
+            .on("mouseout", function (d, i) {
+                //隐去连接线上的文字
+                edges_text.style("fill-opacity", function (edge) {
+                    if (edge.source === d || edge.target === d) {
+                        return 0.0;
+                    }
+                });
+            })
+            .on("dblclick", function (d, i) {
+                d.fixed = false;
+            })
+            .call(force.drag);
+
+        // html title attribute
+        node.append("title")
+            .text(function (d) {
+                return d.title;
+            });
+
+        var text_dx = -20;
+        var text_dy = 20;
+
+        var nodes_text = svg.selectAll(".nodetext")
+            .data(graph.nodes)
+            .enter()
+            .append("text")
+            .attr("class", "nodetext")
+            .attr("dx", text_dx)
+            .attr("dy", text_dy)
+            .text(function (d) {
+                return d.title;
+            });
+
+        // force feed algo ticks
+        force.on("tick", function () {
+
+            //更新连接线的位置
+            link.attr("x1", function (d) {
+                return d.source.x;
+            });
+            link.attr("y1", function (d) {
+                return d.source.y;
+            });
+            link.attr("x2", function (d) {
+                return d.target.x;
+            });
+            link.attr("y2", function (d) {
+                return d.target.y;
+            });
+
+            //更新连接线上文字的位置
+            edges_text.attr("x", function (d) {
+                return (d.source.x + d.target.x) / 2;
+            });
+            edges_text.attr("y", function (d) {
+                return (d.source.y + d.target.y) / 2;
+            });
+
+            //限制结点的边界
+            graph.nodes.forEach(function (d, i) {
+                d.x = d.x - img_w / 2 < 0 ? img_w / 2 : d.x;
+                d.x = d.x + img_w / 2 > width ? width - img_w / 2 : d.x;
+                d.y = d.y - img_h / 2 < 0 ? img_h / 2 : d.y;
+                d.y = d.y + img_h / 2 + text_dy > height ? height - img_h / 2 - text_dy : d.y;
+            });
+
+            //更新结点图片和文字
+            node.attr("x", function (d) {
+                return d.x - img_w / 2;
+            });
+            node.attr("y", function (d) {
+                return d.y - img_h / 2;
+            });
+
+            nodes_text.attr("x", function (d) {
+                return d.x
+            });
+            nodes_text.attr("y", function (d) {
+                return d.y + img_w / 2;
+            });
+        });
+    }
+
+</script>
+
+</body>
+</html>
