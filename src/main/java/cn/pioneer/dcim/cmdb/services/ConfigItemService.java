@@ -1,28 +1,23 @@
 package cn.pioneer.dcim.cmdb.services;
 
-
-import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Map;
 
 /**
- * @param <T>
- */
-public interface ConfigItemService<T> {
-    T save(T item);
+ * @author luxinglin
+ * @version 1.0
+ * @Description: TODO
+ * @create 2018-01-11 16:09
+ **/
+public interface ConfigItemService {
+    /**
+     * @param type
+     * @return
+     */
+    List<Map<String, Object>> getDropdownList(String type);
 
-    List<T> save(List<T> items);
-
-    void delete(T item);
-
-    void delete(Long id);
-
-    void delete(List<T> items);
-
-    Pageable page(Pageable pageable);
-
-    List<T> findList(T param);
-
-    T findOne(Long id);
-
-
+    /**
+     * @return
+     */
+    List<Map<String, Object>> getConfigItemTypes();
 }

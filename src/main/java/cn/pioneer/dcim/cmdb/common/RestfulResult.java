@@ -4,7 +4,7 @@ import cn.pioneer.dcim.cmdb.common.constants.RestConst;
 
 import java.util.HashMap;
 
-public class RestResult extends HashMap<String, Object> {
+public class RestfulResult extends HashMap<String, Object> {
 
     private static final String CODE = "code";
     private static final String DATA = "data";
@@ -14,7 +14,7 @@ public class RestResult extends HashMap<String, Object> {
     /**
      * 构造方法
      */
-    public RestResult() {
+    public RestfulResult() {
         put(STATUS, Status.SUCCESS.getValue());
         put(CODE, RestConst.HttpConst.OK.getCode());
     }
@@ -25,7 +25,7 @@ public class RestResult extends HashMap<String, Object> {
      *
      * @param data 返回消息
      */
-    public RestResult(Object data) {
+    public RestfulResult(Object data) {
         put(STATUS, Status.SUCCESS.getValue());
         put(CODE, RestConst.HttpConst.OK.getCode());
         if (data != null) {
@@ -39,7 +39,7 @@ public class RestResult extends HashMap<String, Object> {
      * @param status  返回状态
      * @param message 返回消息
      */
-    public RestResult(Status status, String message) {
+    public RestfulResult(Status status, String message) {
         put(CODE, RestConst.HttpConst.OK.getCode());
         put(STATUS, status.getValue());
         if (message != null) {
@@ -56,7 +56,7 @@ public class RestResult extends HashMap<String, Object> {
      * @param message 返回消息
      * @param data    the data
      */
-    public RestResult(RestConst.RestEnum code, Status status, Object message, Object data) {
+    public RestfulResult(RestConst.RestEnum code, Status status, Object message, Object data) {
         put(CODE, code.getCode());
         put(STATUS, status.getValue());
         if (message != null) {
@@ -73,7 +73,7 @@ public class RestResult extends HashMap<String, Object> {
      * @param status  返回状态
      * @param message 返回消息
      */
-    public RestResult(Status status, String message, Object data) {
+    public RestfulResult(Status status, String message, Object data) {
         put(CODE, RestConst.HttpConst.OK.getCode());
         put(STATUS, status.getValue());
         if (message != null) {
@@ -101,7 +101,7 @@ public class RestResult extends HashMap<String, Object> {
      * @param code 请求状态Code
      * @return RestResult
      */
-    public RestResult setCode(RestConst.RestEnum code) {
+    public RestfulResult setCode(RestConst.RestEnum code) {
         put(CODE, code.getCode());
         return this;
     }
@@ -121,7 +121,7 @@ public class RestResult extends HashMap<String, Object> {
      * @param status 返回状态
      * @return RestResult
      */
-    public RestResult setStatus(Status status) {
+    public RestfulResult setStatus(Status status) {
         put(STATUS, status.getValue());
         return this;
     }
@@ -141,7 +141,7 @@ public class RestResult extends HashMap<String, Object> {
      * @param message 返回消息
      * @return the message
      */
-    public RestResult setMessage(Object message) {
+    public RestfulResult setMessage(Object message) {
         put(MESSAGE, message);
         return this;
     }
@@ -161,7 +161,7 @@ public class RestResult extends HashMap<String, Object> {
      * @param data 返回数据
      * @return RestResult
      */
-    public RestResult setData(Object data) {
+    public RestfulResult setData(Object data) {
         put(DATA, data);
         return this;
     }
@@ -173,7 +173,7 @@ public class RestResult extends HashMap<String, Object> {
      * @param extData the ext data
      * @return RestResult
      */
-    public RestResult setExtData(String key, Object extData) {
+    public RestfulResult setExtData(String key, Object extData) {
         put(key, extData);
         return this;
     }

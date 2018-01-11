@@ -1,6 +1,6 @@
 package cn.pioneer.dcim.cmdb.controller;
 
-import cn.pioneer.dcim.cmdb.common.RestResult;
+import cn.pioneer.dcim.cmdb.common.RestfulResult;
 import cn.pioneer.dcim.cmdb.common.util.PatchUpdateInfoUtil;
 import cn.pioneer.dcim.cmdb.domain.entity.BizSystemConfigItem;
 import cn.pioneer.dcim.cmdb.services.impl.BizSystemService;
@@ -30,12 +30,12 @@ public class BizSystemController {
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public RestResult save(BizSystemConfigItem bizSystem,
-                           HttpServletRequest request) {
+    public RestfulResult save(BizSystemConfigItem bizSystem,
+                              HttpServletRequest request) {
         //构造更新信息
         PatchUpdateInfoUtil.patch(bizSystem, request);
         BizSystemConfigItem persist = bizSystemService.save(bizSystem);
-        return new RestResult(persist);
+        return new RestfulResult(persist);
     }
 
     /**
@@ -45,8 +45,8 @@ public class BizSystemController {
      * @return
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public RestResult findOne(@PathVariable Long id) {
-        return new RestResult(bizSystemService.findOne(id));
+    public RestfulResult findOne(@PathVariable Long id) {
+        return new RestfulResult(bizSystemService.findOne(id));
     }
 
     /**
@@ -56,8 +56,8 @@ public class BizSystemController {
      * @return
      */
     @RequestMapping(value = "/findList", method = RequestMethod.GET)
-    public RestResult findList(BizSystemConfigItem bizSystemConfigItem) {
-        return new RestResult(bizSystemService.findList(bizSystemConfigItem));
+    public RestfulResult findList(BizSystemConfigItem bizSystemConfigItem) {
+        return new RestfulResult(bizSystemService.findList(bizSystemConfigItem));
     }
 
     /**
@@ -67,9 +67,9 @@ public class BizSystemController {
      * @return
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public RestResult delete(@PathVariable Long id) {
+    public RestfulResult delete(@PathVariable Long id) {
         bizSystemService.delete(id);
-        return new RestResult();
+        return new RestfulResult();
     }
 
     /**

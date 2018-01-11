@@ -3,11 +3,12 @@ package cn.pioneer.dcim.cmdb.services.impl;
 import cn.pioneer.dcim.cmdb.common.constants.CiLabelConstant;
 import cn.pioneer.dcim.cmdb.common.constants.CiRelationConstant;
 import cn.pioneer.dcim.cmdb.common.util.ToyUtil;
+import cn.pioneer.dcim.cmdb.dao.BizSystemDao;
 import cn.pioneer.dcim.cmdb.domain.entity.BizSystemConfigItem;
 import cn.pioneer.dcim.cmdb.domain.relationship.BelongToRelation;
 import cn.pioneer.dcim.cmdb.domain.relationship.DeployOnRelation;
 import cn.pioneer.dcim.cmdb.repositories.BizSystemRepository;
-import cn.pioneer.dcim.cmdb.services.ConfigItemService;
+import cn.pioneer.dcim.cmdb.services.ConfigItemAble;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,13 @@ import java.util.*;
  * @since 2018-01-10
  */
 @Service
-public class BizSystemService implements ConfigItemService<BizSystemConfigItem> {
+public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
     protected static Logger logger = LoggerFactory.getLogger(BizSystemService.class);
     @Autowired
     BizSystemRepository bizSystemRepository;
+    @Autowired
+    BizSystemDao bizSystemDao;
+
 
     @Override
     public BizSystemConfigItem save(BizSystemConfigItem item) {
@@ -68,12 +72,8 @@ public class BizSystemService implements ConfigItemService<BizSystemConfigItem> 
 
     @Override
     public List<BizSystemConfigItem> findList(BizSystemConfigItem param) {
-        List<BizSystemConfigItem> result = new ArrayList<>();
-        Collection<BizSystemConfigItem> configItems = this.bizSystemRepository.findByNameLike(param.getName());
-        for (BizSystemConfigItem item : configItems) {
-            result.add(item);
-        }
-        return result;
+        List list = bizSystemDao.queryBizSystemConfigItemByPerproty(param);
+        return list;
     }
 
     @Override
@@ -94,31 +94,34 @@ public class BizSystemService implements ConfigItemService<BizSystemConfigItem> 
 
             int target = i;
             i++;
-            for (BelongToRelation relation : bizSystem.getPersonSet()) {
-                Map<String, Object> actor = ToyUtil.map("title", relation.getPerson().getName(), "label", CiLabelConstant.PERSON);
-                actor.put("image", "assets/img/person.svg");
-                int source = nodes.indexOf(actor);
-                if (source == -1) {
-                    nodes.add(actor);
-                    source = i++;
-                }
+            if (bizSystem.getPersonSet() != null) {
+                for (BelongToRelation relation : bizSystem.getPersonSet()) {
+                    Map<String, Object> actor = ToyUtil.map("title", relation.getPerson().getName(), "label", CiLabelConstant.PERSON);
+                    actor.put("image", "assets/img/person.svg");
+                    int source = nodes.indexOf(actor);
+                    if (source == -1) {
+                        nodes.add(actor);
+                        source = i++;
+                    }
 
-                Map<String, Object> linkMap = ToyUtil.map("source", source, "target", target);
-                linkMap.put("relation", CiRelationConstant.BELONG_TO);
-                rels.add(linkMap);
+                    Map<String, Object> linkMap = ToyUtil.map("source", source, "target", target);
+                    linkMap.put("relation", CiRelationConstant.BELONG_TO);
+                    rels.add(linkMap);
+                }
             }
-
-            for (DeployOnRelation relation : bizSystem.getServerSet()) {
-                Map<String, Object> server = ToyUtil.map("title", relation.getServer().getName(), "label", CiLabelConstant.SERVER);
-                server.put("image", "assets/img/Server.svg");
-                int source = nodes.indexOf(server);
-                if (source == -1) {
-                    nodes.add(server);
-                    source = i++;
+            if (bizSystem.getServerSet() != null) {
+                for (DeployOnRelation relation : bizSystem.getServerSet()) {
+                    Map<String, Object> server = ToyUtil.map("title", relation.getServer().getName(), "label", CiLabelConstant.SERVER);
+                    server.put("image", "assets/img/Server.svg");
+                    int source = nodes.indexOf(server);
+                    if (source == -1) {
+                        nodes.add(server);
+                        source = i++;
+                    }
+                    Map<String, Object> linkMap = ToyUtil.map("source", source, "target", target);
+                    linkMap.put("relation", CiRelationConstant.DEPLOY_ON);
+                    rels.add(linkMap);
                 }
-                Map<String, Object> linkMap = ToyUtil.map("source", source, "target", target);
-                linkMap.put("relation", CiRelationConstant.DEPLOY_ON);
-                rels.add(linkMap);
             }
         }
         return ToyUtil.map("nodes", nodes, "links", rels);

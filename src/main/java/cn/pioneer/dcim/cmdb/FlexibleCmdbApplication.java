@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 
 /**
  * @author Michael Hunger
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringBootApplication
 @EntityScan("cn.pioneer.dcim.cmdb.domain")
+@EnableNeo4jRepositories(basePackages = {"cn.pioneer.dcim.cmdb.repositories.", "cn.pioneer.dcim.cmdb.dao"})
 public class FlexibleCmdbApplication {
 
     public static void main(String[] args) {

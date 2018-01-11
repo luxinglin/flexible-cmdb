@@ -1,7 +1,7 @@
 package cn.pioneer.dcim.cmdb.domain.entity;
 
-import cn.pioneer.dcim.cmdb.common.ServerTypeEnum;
 import cn.pioneer.dcim.cmdb.common.constants.CiRelationConstant;
+import cn.pioneer.dcim.cmdb.common.emun.ServerTypeEnum;
 import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
 import cn.pioneer.dcim.cmdb.domain.relationship.VirtualOnRelation;
 import org.neo4j.ogm.annotation.NodeEntity;

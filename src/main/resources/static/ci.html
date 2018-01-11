@@ -25,21 +25,28 @@
                 <a href="ci.html">配置项</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="ci-relation.html">关系图</a>
             </div>
-            <div class="col-sm-4 col-md-4">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <form role="search" class="navbar-form" id="search">
-                            <div class="form-group">
-                                <input type="text" value="系统" placeholder="Search for Movie Title" class="form-control"
-                                       name="search">
-                            </div>
-                            <button class="btn btn-default" type="submit">Search</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
+
 
         </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-4 col-md-4">
+        <ul class="nav navbar-nav">
+            <li>
+                <form role="search" class="navbar-form" id="search">
+                    <div class="form-group">
+                        <select id="ciTypeSelect" class="form-control"
+                                name="ciType" onchange="filterCiSelect()"></select>
+                    </div>
+                    <div class="form-group">
+                        <select id="ciSelect" class="form-control"
+                                name="ci"></select>
+                    </div>
+                </form>
+            </li>
+        </ul>
     </div>
 </div>
 
@@ -107,20 +114,8 @@
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        function showMovie(id) {
-            $.get("/bizSystem/" + id,
-                function (data) {
-                    if (!data) return;
-                    var bizSystem = data.data;
-                    $("#title").text(bizSystem.name);
-                    var $list = $("#crew").empty();
-                }, "json");
-            return false;
-        }
-
         function search() {
-            var query = $("#search").find("input[name=search]").val();
-            $.get("/bizSystem/findList?name=*" + encodeURIComponent(query) + "*",
+            $.get("/bizSystem/findList?name=",
                 function (data) {
                     var t = $("table#results tbody").empty();
                     if (!data) return;
@@ -128,22 +123,17 @@
                     if (data.length < 1) return;
                     data.forEach(function (bizSystem) {
                         $("<tr><td class='movie'>" + bizSystem.name + "</td><td>" + bizSystem.code + "</td><td>" + bizSystem.bizSystemDesc + "</td><td>" + bizSystem.personSet.length + "</td><td>" + bizSystem.serverSet.length + "</td><td><a href='#' onclick='deleteItem(" + bizSystem.id + ")'>删除</a></td></tr>").appendTo(t)
-                            .click(function () {
-                                showMovie($(this).find("td.movie").text());
-                            })
                     });
-                    showMovie(data[0].id);
                 }, "json");
             return false;
         }
 
-        $("#search").submit(search);
         search();
 
-        //add
-        $("#addBizSystemBtn").on("click", addBizSystem);
-
-        function addBizSystem() {
+        /**
+         * 新增业务系统配置项
+         */
+        $("#addBizSystemBtn").on("click", function () {
             $.ajax({
                 url: "/bizSystem",
                 data: $("#newBizSystemForm").serialize(),
@@ -156,8 +146,58 @@
                     console.log(er)
                 }
             });
-        }
+        });
+
+        /**
+         * 加载配置项类型下拉框
+         */
+        $.ajax({
+            url: "/configItem",
+            type: "GET",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.status) {
+                    $("#ciTypeSelect").empty();
+                    data.data.forEach(function (item) {
+                        $("#ciTypeSelect").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                    });
+                    $("#ciTypeSelect").prepend("<option value='' selected>--请选择--</option>")
+                }
+            },
+            error: function (er) {
+                console.log(er)
+            }
+        });
     });
+
+    /**
+     * 筛选出ci信息
+     */
+    function filterCiSelect() {
+        $("#ciSelect").empty();
+        var val = $("#ciTypeSelect").val();
+        if (val != "") {
+            $.ajax({
+                url: "/configItem/" + val,
+                type: "GET",
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status) {
+                        data.data.forEach(function (item) {
+                            $("#ciSelect").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                        });
+                        $("#ciSelect").prepend("<option value='' selected>--请选择--</option>");
+                    }
+                },
+                error: function (er) {
+                    console.log(er)
+                }
+            });
+        } else {
+            $("#ciSelect").prepend("<option value='' selected>--请选择--</option>");
+        }
+    }
 
     function deleteItem(id) {
         console.log("to delete id: " + id);
@@ -167,6 +207,7 @@
             dataType: 'json',
             success: function (data) {
                 console.log(data);
+
             },
             error: function (er) {
                 console.log(er)

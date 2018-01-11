@@ -1,21 +1,13 @@
 package cn.pioneer.dcim.cmdb.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.neo4j.ogm.annotation.GraphId;
+import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 /**
  * @author Mark Angrish
  */
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @NodeEntity
-public class Person {
-
-    @GraphId
-    private Long id;
-
-    private String name;
+public class Person extends AbstractConfigItem {
 
     private int age;
 
@@ -23,24 +15,7 @@ public class Person {
     }
 
     public Person(String name) {
-
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.setName(name);
     }
 
     public int getAge() {

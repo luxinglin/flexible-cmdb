@@ -8,6 +8,7 @@ import java.util.Map;
  * @since 2018-01-08
  */
 public class ToyUtil {
+
     private ToyUtil() {
     }
 
@@ -37,5 +38,8 @@ public class ToyUtil {
         return false;
     }
 
-    ;
+    public static boolean isSpecifyType(Class cls, String type) {
+        return cls.getSimpleName().equals(type);
+    }
+
 }
