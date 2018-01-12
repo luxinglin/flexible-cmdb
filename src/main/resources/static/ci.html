@@ -13,7 +13,7 @@
             <div class="navbar-header col-sm-4 col-md-4">
                 <div class="logo-well">
                     <a href="#">
-                        <img src="assets/img/CMDB.svg" alt="Neo4j World's Leading Graph Database" id="logo">
+                        <img src="assets/img/cmdb-logo.svg" alt="Neo4j World's Leading Graph Database" id="logo">
                     </a>
                 </div>
                 <div class="navbar-brand">
@@ -41,6 +41,9 @@
                                 name="ciType" onchange="filterCiSelect()"></select>
                     </div>
                     <div class="form-group">
+                        <!--<input id="ci" name="ci" type="text" list="ciSelect" class="form-control" />
+                        <datalist id="ciSelect" >
+                        </datalist>-->
                         <select id="ciSelect" class="form-control"
                                 name="ci"></select>
                     </div>
@@ -52,8 +55,9 @@
 
 <div class="row">
     <div class="col-md-5">
-        <div class="panel panel-default">
-            <div class="panel-heading" id="add_title">新增业务系统</div>
+        <!--新增业务系统-->
+        <div id="add_BizSystemConfigItem" style="display: none" class="panel panel-default">
+            <div class="panel-heading">新增业务系统</div>
             <div class="row">
                 <form id="newBizSystemForm" class="form-horizontal addlabel">
                     <div class="form-group">
@@ -77,12 +81,47 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="personSetAForInsert" class="col-sm-3 control-label">责任人A：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="personSet.id" multiple id="personSetAForInsert"
+                                    placeholder="责任人"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-3"></label>
                         <div class="col-sm-8 pull-right">
                             <button class="btn btn-default" type="button" id="addBizSystemBtn">Add</button>
                         </div>
                     </div>
 
+                </form>
+            </div>
+        </div>
+        <!--新增服务器-->
+        <div id="add_ServerConfigItem" style="display: none" class="panel panel-default">
+            <div class="panel-heading">新增服务器</div>
+            <div class="row">
+                <form id="newServerForm" class="form-horizontal addlabel">
+                    <div class="form-group">
+                        <label for="uuidForInsert" class="col-sm-3 control-label">UUID：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="uuid" id="uuidForInsert" placeholder="系统名称"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="snForInsert" class="col-sm-3 control-label">序列号：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="sn" id="snForInsert" placeholder="系统编码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="brandForInsert" class="col-sm-3 control-label">品牌：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="brand" id="brandForInsert"
+                                   placeholder="系统描述">
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -113,21 +152,21 @@
 
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
-    $(function () {
-        function search() {
-            $.get("/bizSystem/findList?name=",
-                function (data) {
-                    var t = $("table#results tbody").empty();
-                    if (!data) return;
-                    data = data.data;
-                    if (data.length < 1) return;
-                    data.forEach(function (bizSystem) {
-                        $("<tr><td class='movie'>" + bizSystem.name + "</td><td>" + bizSystem.code + "</td><td>" + bizSystem.bizSystemDesc + "</td><td>" + bizSystem.personSet.length + "</td><td>" + bizSystem.serverSet.length + "</td><td><a href='#' onclick='deleteItem(" + bizSystem.id + ")'>删除</a></td></tr>").appendTo(t)
-                    });
-                }, "json");
-            return false;
-        }
+    function search() {
+        $.get("/bizSystem/findList?name=",
+            function (data) {
+                var t = $("table#results tbody").empty();
+                if (!data) return;
+                data = data.data;
+                if (data.length < 1) return;
+                data.forEach(function (bizSystem) {
+                    $("<tr><td class='movie'>" + bizSystem.name + "</td><td>" + bizSystem.code + "</td><td>" + bizSystem.bizSystemDesc + "</td><td>" + bizSystem.personSet.length + "</td><td>" + bizSystem.serverSet.length + "</td><td><a href='#' onclick='deleteItem(" + bizSystem.id + ")'>删除</a></td></tr>").appendTo(t)
+                });
+            }, "json");
+        return false;
+    }
 
+    $(function () {
         search();
 
         /**
@@ -140,7 +179,9 @@
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
+                    if (data.status) {
+                        search();
+                    }
                 },
                 error: function (er) {
                     console.log(er)
@@ -156,7 +197,6 @@
             type: "GET",
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 if (data.status) {
                     $("#ciTypeSelect").empty();
                     data.data.forEach(function (item) {
@@ -169,6 +209,23 @@
                 console.log(er)
             }
         });
+
+        /**
+         * 加载人员列表
+         */
+        $.ajax({
+            url: "/configItem/Person",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#personSetAForInsert").empty();
+                if (data.status) {
+                    data.data.forEach(function (item) {
+                        $("#personSetAForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                    });
+                }
+            }
+        });
     });
 
     /**
@@ -178,6 +235,11 @@
         $("#ciSelect").empty();
         var val = $("#ciTypeSelect").val();
         if (val != "") {
+            $("div[id^=add_]").each(function () {
+                $(this).css("display", "none");
+            });
+            $("#add_" + val).css("display", "block");
+
             $.ajax({
                 url: "/configItem/" + val,
                 type: "GET",
@@ -199,6 +261,10 @@
         }
     }
 
+    /**
+     * 配置项删除操作
+     * @param id
+     */
     function deleteItem(id) {
         console.log("to delete id: " + id);
         $.ajax({
@@ -206,14 +272,16 @@
             type: "DELETE",
             dataType: 'json',
             success: function (data) {
-                console.log(data);
-
+                if (data.status) {
+                    search();
+                }
             },
             error: function (er) {
                 console.log(er)
             }
         });
     }
+
 </script>
 
 

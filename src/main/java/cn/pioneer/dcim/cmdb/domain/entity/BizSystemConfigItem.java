@@ -8,6 +8,7 @@ import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -31,12 +32,12 @@ public class BizSystemConfigItem extends AbstractConfigItem {
      * 归属于xx人管理
      */
     @Relationship(type = CiRelationConstant.BELONG_TO)
-    private Set<BelongToRelation> personSet;
+    private Set<BelongToRelation> personSet = new HashSet<>();
     /**
      * 部署在xx服务器上
      */
     @Relationship(type = CiRelationConstant.DEPLOY_ON)
-    private Set<DeployOnRelation> serverSet;
+    private Set<DeployOnRelation> serverSet = new HashSet<>();
 
     public String getCode() {
         return code;

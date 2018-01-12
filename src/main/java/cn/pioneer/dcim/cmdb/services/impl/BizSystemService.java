@@ -33,7 +33,8 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
 
     @Override
     public BizSystemConfigItem save(BizSystemConfigItem item) {
-        return null;
+        BizSystemConfigItem persist = bizSystemRepository.save(item);
+        return persist;
     }
 
     @Override
@@ -112,7 +113,7 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
             if (bizSystem.getServerSet() != null) {
                 for (DeployOnRelation relation : bizSystem.getServerSet()) {
                     Map<String, Object> server = ToyUtil.map("title", relation.getServer().getName(), "label", CiLabelConstant.SERVER);
-                    server.put("image", "assets/img/Server.svg");
+                    server.put("image", "assets/img/server.svg");
                     int source = nodes.indexOf(server);
                     if (source == -1) {
                         nodes.add(server);

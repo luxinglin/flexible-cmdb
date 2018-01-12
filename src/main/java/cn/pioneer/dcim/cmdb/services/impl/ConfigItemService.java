@@ -4,7 +4,6 @@ import cn.pioneer.dcim.cmdb.common.emun.ConfigTypeEmun;
 import cn.pioneer.dcim.cmdb.common.util.ToyUtil;
 import cn.pioneer.dcim.cmdb.dao.ConfigItemDao;
 import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
-import cn.pioneer.dcim.cmdb.services.ConfigItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ import java.util.Map;
  * @create 2018-01-11 16:10
  **/
 @Service
-public class ConfigItemServiceImpl implements ConfigItemService {
+public class ConfigItemService implements cn.pioneer.dcim.cmdb.services.ConfigItemService {
     @Autowired
     ConfigItemDao configItemDao;
 
