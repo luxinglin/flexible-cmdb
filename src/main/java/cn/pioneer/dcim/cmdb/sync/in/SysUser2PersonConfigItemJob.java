@@ -23,8 +23,8 @@ import java.util.List;
  * @create 2018-01-18 17:17
  **/
 @Component
-public class SysMUser2PersonConfigItemJob {
-    protected static Logger logger = LoggerFactory.getLogger(SysMUser2PersonConfigItemJob.class);
+public class SysUser2PersonConfigItemJob {
+    protected static Logger logger = LoggerFactory.getLogger(SysUser2PersonConfigItemJob.class);
     @Autowired
     PersonService personService;
     @Autowired
