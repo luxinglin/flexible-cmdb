@@ -26,44 +26,39 @@
                 <a href="ci-relation.html">关系图</a>
             </div>
 
+            <div class="col-sm-4 col-md-4">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <form role="search" class="navbar-form" id="search">
+                            <div class="form-group">
+                                <select id="ciTypeSelect" class="form-control"
+                                        name="ciType" onchange="filterCiSelect()"></select>
+                            </div>
+                            <!-- <div class="form-group">
+                                 <select id="ciSelect" class="form-control"
+                                         name="ci"></select>
+                             </div>-->
+                        </form>
+                    </li>
+                </ul>
+            </div>
 
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-sm-4 col-md-4">
-        <ul class="nav navbar-nav">
-            <li>
-                <form role="search" class="navbar-form" id="search">
-                    <div class="form-group">
-                        <select id="ciTypeSelect" class="form-control"
-                                name="ciType" onchange="filterCiSelect()"></select>
-                    </div>
-                    <div class="form-group">
-                        <!--<input id="ci" name="ci" type="text" list="ciSelect" class="form-control" />
-                        <datalist id="ciSelect" >
-                        </datalist>-->
-                        <select id="ciSelect" class="form-control"
-                                name="ci"></select>
-                    </div>
-                </form>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<div class="row">
     <div class="col-md-5">
-        <!--新增业务系统-->
+        <!--新增业务系统 BEGIN-->
         <div id="add_BizSystemConfigItem" style="display: none" class="panel panel-default">
             <div class="panel-heading">新增业务系统</div>
             <div class="row">
-                <form id="newBizSystemForm" class="form-horizontal addlabel">
+                <form id="newBizSystemConfigItemForm" class="form-horizontal addlabel">
                     <div class="form-group">
-                        <label for="nameForInsert" class="col-sm-3 control-label">系统名称：</label>
+                        <label for="bizSystem.nameForInsert" class="col-sm-3 control-label">系统名称：</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="name" id="nameForInsert" placeholder="系统名称"
+                            <input type="text" class="form-control" name="name" id="bizSystem.nameForInsert"
+                                   placeholder="系统名称"
                                    required>
                         </div>
                     </div>
@@ -81,50 +76,134 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="personSetAForInsert" class="col-sm-3 control-label">责任人A：</label>
+                        <label for="personSetForInsert" class="col-sm-3 control-label">责任人A：</label>
                         <div class="col-sm-8">
-                            <select class="form-control" name="personSet.id" multiple id="personSetAForInsert"
+                            <select class="form-control" name="bizContactIdStr" multiple id="personSetForInsert"
                                     placeholder="责任人"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="serverSetForInsert" class="col-sm-3 control-label">部署服务器：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="serverIdStr" multiple id="serverSetForInsert"
+                                    placeholder="部署服务器"></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3"></label>
                         <div class="col-sm-8 pull-right">
-                            <button class="btn btn-default" type="button" id="addBizSystemBtn">Add</button>
+                            <button class="btn btn-default" type="button" id="addBizSystemConfigItemBtn">Add</button>
                         </div>
                     </div>
 
                 </form>
             </div>
         </div>
-        <!--新增服务器-->
+        <!--新增业务系统 END-->
+
+        <!--新增服务器 BEGIN-->
         <div id="add_ServerConfigItem" style="display: none" class="panel panel-default">
             <div class="panel-heading">新增服务器</div>
             <div class="row">
-                <form id="newServerForm" class="form-horizontal addlabel">
+                <form id="newServerConfigItemForm" class="form-horizontal addlabel">
+                    <div class="form-group">
+                        <label for="server.nameForInsert" class="col-sm-3 control-label">名称：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="name" id="server.nameForInsert"
+                                   placeholder="名称"
+                                   required>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="uuidForInsert" class="col-sm-3 control-label">UUID：</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="uuid" id="uuidForInsert" placeholder="系统名称"
+                            <input type="text" class="form-control" name="uuid" id="uuidForInsert" placeholder="UUID"
                                    required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="snForInsert" class="col-sm-3 control-label">序列号：</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="sn" id="snForInsert" placeholder="系统编码">
+                            <input type="text" class="form-control" name="sn" id="snForInsert" placeholder="序列号">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="brandForInsert" class="col-sm-3 control-label">品牌：</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" name="brand" id="brandForInsert"
-                                   placeholder="系统描述">
+                                   placeholder="品牌">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"></label>
+                        <div class="col-sm-8 pull-right">
+                            <button class="btn btn-default" type="button" id="addServerConfigItemBtn">Add</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+        <!--新增服务器 END-->
+
+        <!--新增密码信息 BEGIN-->
+        <div id="add_PasswordConfigItem" style="display: none" class="panel panel-default">
+            <div class="panel-heading">新增密码信息</div>
+            <div class="row">
+                <form id="newPasswordConfigItemForm" class="form-horizontal addlabel">
+                    <div class="form-group">
+                        <label for="password.nameForInsert" class="col-sm-3 control-label">密码名称：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="name" id="password.nameForInsert"
+                                   placeholder="密码名称"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="userNameForInsert" class="col-sm-3 control-label">用户名：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="userName" id="userNameForInsert"
+                                   placeholder="用户名"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordForInsert" class="col-sm-3 control-label">密码：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="password" id="passwordForInsert"
+                                   placeholder="密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="remarkForInsert" class="col-sm-3 control-label">备注：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="remark" id="remarkForInsert"
+                                   placeholder="备注">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="bizSystemIdStrForInsert" class="col-sm-3 control-label">所属系统：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="bizSystemIdStr" multiple id="bizSystemIdStrForInsert"
+                                    placeholder="所属系统"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="serverIdStrForInsert" class="col-sm-3 control-label">所属服务器：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="serverIdStr" multiple id="serverIdStrForInsert"
+                                    placeholder="所属服务器"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"></label>
+                        <div class="col-sm-8 pull-right">
+                            <button class="btn btn-default" type="button" id="addPasswordConfigItemBtn">Add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--新增密码信息 END-->
     </div>
 </div>
 
@@ -134,14 +213,7 @@
             <div class="panel-heading">Search Results</div>
             <table id="results" class="table table-striped table-hover">
                 <thead>
-                <tr>
-                    <th>系统名称</th>
-                    <th>系统编码</th>
-                    <th>系统描述</th>
-                    <th>关联人员</th>
-                    <th>关联服务器</th>
-                    <th>操作</th>
-                </tr>
+
                 </thead>
                 <tbody>
                 </tbody>
@@ -153,29 +225,93 @@
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
     function search() {
-        $.get("/bizSystem/findList?name=",
+        var val = $("#ciTypeSelect").val();
+        var url = "";
+        var head = $("table#results thead").empty();
+        if (val === 'BizSystemConfigItem') {
+            $(" <tr>\n" +
+                "                    <th>系统名称</th>\n" +
+                "                    <th>系统编码</th>\n" +
+                "                    <th>系统描述</th>\n" +
+                "                    <th>关联人员</th>\n" +
+                "                    <th>关联服务器</th>\n" +
+                "                    <th>操作</th>\n" +
+                "                </tr>").appendTo(head);
+            url = "/bizSystems/findList?name=";
+        } else if (val === 'PasswordConfigItem') {
+            url = "/passwords/?name=";
+            $(" <tr>\n" +
+                "                    <th>密码名称</th>\n" +
+                "                    <th>用户名</th>\n" +
+                "                    <th>密码</th>\n" +
+                "                    <th>备注</th>\n" +
+                "                    <th>关联信息</th>\n" +
+                "                    <th>操作</th>\n" +
+                "                </tr>").appendTo(head);
+        }
+        //数据清理
+        var t = $("table#results tbody").empty();
+        $.get(url,
             function (data) {
-                var t = $("table#results tbody").empty();
+                console.log(val);
                 if (!data) return;
                 data = data.data;
                 if (data.length < 1) return;
-                data.forEach(function (bizSystem) {
-                    $("<tr><td class='movie'>" + bizSystem.name + "</td><td>" + bizSystem.code + "</td><td>" + bizSystem.bizSystemDesc + "</td><td>" + bizSystem.personSet.length + "</td><td>" + bizSystem.serverSet.length + "</td><td><a href='#' onclick='deleteItem(" + bizSystem.id + ")'>删除</a></td></tr>").appendTo(t)
+                data.forEach(function (item) {
+                    if (val === "BizSystemConfigItem") {
+                        $("<tr><td class='movie'>" + item.name + "</td><td>" + item.code + "</td><td>" + item.bizSystemDesc + "</td><td>" + 0 + "</td><td>" + item.serverSet.length + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t)
+                    } else if (val === "PasswordConfigItem") {
+                        $("<tr><td class='movie'>" + item.name + "</td><td>" + item.userName + "</td><td>" + item.password + "</td><td>" + item.remark + "</td><td>" + item.passwordForRelations.length + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t)
+                    }
                 });
             }, "json");
         return false;
     }
 
     $(function () {
-        search();
-
         /**
          * 新增业务系统配置项
          */
-        $("#addBizSystemBtn").on("click", function () {
+        $("#addBizSystemConfigItemBtn").on("click", function () {
             $.ajax({
-                url: "/bizSystem",
-                data: $("#newBizSystemForm").serialize(),
+                url: "/bizSystems",
+                data: $("#newBizSystemConfigItemForm").serialize(),
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status) {
+                        search();
+                    }
+                },
+                error: function (er) {
+                    console.log(er)
+                }
+            });
+        });
+
+        //新增服务器
+        $("#addServerConfigItemBtn").on("click", function () {
+            $.ajax({
+                url: "/servers",
+                data: $("#newServerConfigItemForm").serialize(),
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status) {
+                        search();
+                    }
+                },
+                error: function (er) {
+                    console.log(er)
+                }
+            });
+        });
+
+        //新增密码信息
+        $("#addPasswordConfigItemBtn").on("click", function () {
+            $.ajax({
+                url: "/passwords",
+                data: $("#newPasswordConfigItemForm").serialize(),
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {
@@ -199,10 +335,16 @@
             success: function (data) {
                 if (data.status) {
                     $("#ciTypeSelect").empty();
+                    var idx = 0;
+                    var id = 0;
                     data.data.forEach(function (item) {
+                        if (idx == 0) {
+                            id = item.value;
+                        }
                         $("#ciTypeSelect").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                        idx = idx + 1;
                     });
-                    $("#ciTypeSelect").prepend("<option value='' selected>--请选择--</option>")
+                    refreshCiSelect(id);
                 }
             },
             error: function (er) {
@@ -214,31 +356,65 @@
          * 加载人员列表
          */
         $.ajax({
-            url: "/configItem/Person",
+            url: "/configItem/PersonConfigItem",
             type: "GET",
             dataType: "json",
             success: function (data) {
-                $("#personSetAForInsert").empty();
+                $("#personSetForInsert").empty();
                 if (data.status) {
                     data.data.forEach(function (item) {
-                        $("#personSetAForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                        $("#personSetForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                    });
+                }
+            }
+        });
+
+        /**
+         * 加载服务器列表
+         */
+        $.ajax({
+            url: "/configItem/ServerConfigItem",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#serverSetForInsert").empty();
+                $("#serverIdStrForInsert").empty();
+                if (data.status) {
+                    data.data.forEach(function (item) {
+                        $("#serverSetForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                        $("#serverIdStrForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                    });
+                }
+            }
+        });
+
+        /**
+         * 加载系统列表
+         */
+        $.ajax({
+            url: "/configItem/BizSystemConfigItem",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#bizSystemIdStrForInsert").empty();
+                if (data.status) {
+                    data.data.forEach(function (item) {
+                        $("#bizSystemIdStrForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
                     });
                 }
             }
         });
     });
 
-    /**
-     * 筛选出ci信息
-     */
-    function filterCiSelect() {
-        $("#ciSelect").empty();
-        var val = $("#ciTypeSelect").val();
+    function refreshCiSelect(val) {
         if (val != "") {
+            //新增配置项form显隐切换
             $("div[id^=add_]").each(function () {
                 $(this).css("display", "none");
             });
             $("#add_" + val).css("display", "block");
+            //数据列表更新
+            search();
 
             $.ajax({
                 url: "/configItem/" + val,
@@ -262,13 +438,29 @@
     }
 
     /**
+     * 筛选出ci信息
+     */
+    function filterCiSelect() {
+        $("#ciSelect").empty();
+        var val = $("#ciTypeSelect").val();
+        refreshCiSelect(val);
+    }
+
+    /**
      * 配置项删除操作
      * @param id
      */
     function deleteItem(id) {
         console.log("to delete id: " + id);
+        var val = $("#ciTypeSelect").val();
+        var url = "";
+        if (val === "BizSystemConfigItem") {
+            url = "/bizSystems/" + id;
+        } else if (val === "PasswordConfigItem") {
+            url = "/passwords/" + id;
+        }//TODO 其他的删除逻辑
         $.ajax({
-            url: "/bizSystem/" + id,
+            url: url,
             type: "DELETE",
             dataType: 'json',
             success: function (data) {
@@ -281,7 +473,6 @@
             }
         });
     }
-
 </script>
 
 

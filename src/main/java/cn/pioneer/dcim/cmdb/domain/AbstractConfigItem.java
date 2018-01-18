@@ -1,11 +1,16 @@
 package cn.pioneer.dcim.cmdb.domain;
 
+import cn.pioneer.dcim.cmdb.common.constants.CiRelationConstant;
+import cn.pioneer.dcim.cmdb.domain.relationship.OwnedRelation;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.Index;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 //import org.springframework.data.neo4j.annotation.Indexed;
 
 /**
@@ -36,6 +41,11 @@ public abstract class AbstractConfigItem {
      * 配置项类型名称
      */
     private String typeName;
+    /**
+     * 责任人关系
+     */
+    @Relationship(type = CiRelationConstant.OWNED)
+    private Set<OwnedRelation> ownedRelationSet = new HashSet<>();
     /**
      * 来源
      */
@@ -159,5 +169,13 @@ public abstract class AbstractConfigItem {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public Set<OwnedRelation> getOwnedRelationSet() {
+        return ownedRelationSet;
+    }
+
+    public void setOwnedRelationSet(Set<OwnedRelation> ownedRelationSet) {
+        this.ownedRelationSet = ownedRelationSet;
     }
 }

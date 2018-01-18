@@ -5,7 +5,9 @@ import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
 import cn.pioneer.dcim.cmdb.domain.relationship.PasswordForRelation;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.Transient;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,7 +34,12 @@ public class PasswordConfigItem extends AbstractConfigItem {
      * 属于某一个配置项
      */
     @Relationship(type = CiRelationConstant.PASSWORD_FOR)
-    private Set<PasswordForRelation> passwordForRelations;
+    private Set<PasswordForRelation> passwordForRelations = new HashSet<>();
+
+    @Transient
+    private String bizSystemIdStr;
+    @Transient
+    private String serverIdStr;
 
     public String getUserName() {
         return userName;
@@ -64,5 +71,21 @@ public class PasswordConfigItem extends AbstractConfigItem {
 
     public void setPasswordForRelations(Set<PasswordForRelation> passwordForRelations) {
         this.passwordForRelations = passwordForRelations;
+    }
+
+    public String getBizSystemIdStr() {
+        return bizSystemIdStr;
+    }
+
+    public void setBizSystemIdStr(String bizSystemIdStr) {
+        this.bizSystemIdStr = bizSystemIdStr;
+    }
+
+    public String getServerIdStr() {
+        return serverIdStr;
+    }
+
+    public void setServerIdStr(String serverIdStr) {
+        this.serverIdStr = serverIdStr;
     }
 }

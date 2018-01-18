@@ -3,7 +3,7 @@ package cn.pioneer.dcim.cmdb.domain.relationship;
 import cn.pioneer.dcim.cmdb.common.constants.CiRelationConstant;
 import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
 import cn.pioneer.dcim.cmdb.domain.AbstractRelationShip;
-import cn.pioneer.dcim.cmdb.domain.entity.Person;
+import cn.pioneer.dcim.cmdb.domain.entity.PersonConfigItem;
 import org.neo4j.ogm.annotation.EndNode;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
@@ -14,20 +14,18 @@ import org.neo4j.ogm.annotation.StartNode;
  */
 @RelationshipEntity(type = CiRelationConstant.OWNED)
 public class OwnedRelation extends AbstractRelationShip {
-
     @StartNode
-    private Person person;
-
-    @EndNode
     private AbstractConfigItem abstractEntity;
+    @EndNode
+    private PersonConfigItem person;
 
     private String remark;
 
-    public Person getPerson() {
+    public PersonConfigItem getPerson() {
         return person;
     }
 
-    public void setPerson(Person person) {
+    public void setPerson(PersonConfigItem person) {
         this.person = person;
     }
 

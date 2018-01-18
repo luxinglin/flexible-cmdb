@@ -17,7 +17,7 @@ import java.util.Map;
  * @since 2018-01-08
  */
 @RestController
-@RequestMapping("/bizSystem")
+@RequestMapping("/bizSystems")
 public class BizSystemController {
     @Autowired
     BizSystemService bizSystemService;
@@ -80,6 +80,6 @@ public class BizSystemController {
      */
     @RequestMapping("/graph")
     public Map<String, Object> graph(@RequestParam(value = "limit", required = false) Integer limit) {
-        return bizSystemService.graph(limit == null ? 100 : limit);
+        return bizSystemService.graph(null, limit == null ? 100 : limit);
     }
 }

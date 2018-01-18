@@ -18,7 +18,7 @@ public enum ConfigTypeEmun {
     STORAGE("存储设备", StorageConfigItem.class.getSimpleName(), 4),
     MIDDLEWARE("中间件", MiddlewareConfigItem.class.getSimpleName(), 5),
     PASSWORD("密码", PasswordConfigItem.class.getSimpleName(), 6),
-    PERSON("人员", Person.class.getSimpleName(), 7);
+    PERSON("人员", PersonConfigItem.class.getSimpleName(), 7);
     //属性集合
     /**
      * 名称

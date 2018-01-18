@@ -38,6 +38,17 @@ public class ToyUtil {
         return false;
     }
 
+    public static boolean isEmptyOrNull(String string) {
+        if (string == null) {
+            return true;
+        }
+        return string.isEmpty();
+    }
+
+    public static boolean isNotEmpty(String string) {
+        return !isEmptyOrNull(string);
+    }
+
     public static boolean isSpecifyType(Class cls, String type) {
         return cls.getSimpleName().equals(type);
     }

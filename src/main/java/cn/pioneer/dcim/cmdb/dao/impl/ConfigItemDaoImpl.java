@@ -44,8 +44,8 @@ public class ConfigItemDaoImpl implements ConfigItemDao {
             its = session.loadAll(StorageConfigItem.class);
         } else if (isSpecifyType(MiddlewareConfigItem.class, type)) {
             its = session.loadAll(MiddlewareConfigItem.class);
-        } else if (isSpecifyType(Person.class, type)) {
-            its = session.loadAll(Person.class);
+        } else if (isSpecifyType(PersonConfigItem.class, type)) {
+            its = session.loadAll(PersonConfigItem.class);
         }
 
         if (its != null && its.size() > 0) {

@@ -2,12 +2,16 @@ package cn.pioneer.dcim.cmdb.services.impl;
 
 import cn.pioneer.dcim.cmdb.common.constants.CiLabelConstant;
 import cn.pioneer.dcim.cmdb.common.constants.CiRelationConstant;
+import cn.pioneer.dcim.cmdb.common.constants.CommonConstant;
 import cn.pioneer.dcim.cmdb.common.util.ToyUtil;
 import cn.pioneer.dcim.cmdb.dao.BizSystemDao;
 import cn.pioneer.dcim.cmdb.domain.entity.BizSystemConfigItem;
-import cn.pioneer.dcim.cmdb.domain.relationship.BelongToRelation;
+import cn.pioneer.dcim.cmdb.domain.entity.PersonConfigItem;
+import cn.pioneer.dcim.cmdb.domain.entity.ServerConfigItem;
 import cn.pioneer.dcim.cmdb.domain.relationship.DeployOnRelation;
+import cn.pioneer.dcim.cmdb.domain.relationship.OwnedRelation;
 import cn.pioneer.dcim.cmdb.repositories.BizSystemRepository;
+import cn.pioneer.dcim.cmdb.repositories.PersonRepository;
 import cn.pioneer.dcim.cmdb.services.ConfigItemAble;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +33,76 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
     BizSystemRepository bizSystemRepository;
     @Autowired
     BizSystemDao bizSystemDao;
+    @Autowired
+    PersonRepository personRepository;
+    @Autowired
+    ServerService serverService;
 
+    /**
+     * 构建业务系统人员关系
+     *
+     * @param item
+     */
+    private void constructBizSystemPersonRelation(BizSystemConfigItem item) {
+        //业务接口人信息
+        if (ToyUtil.isNotEmpty(item.getBizContactIdStr())) {
+            String[] persons = item.getBizContactIdStr().split(CommonConstant.COMMA);
+            List<PersonConfigItem> personList = new ArrayList<>(persons.length);
+            for (int i = 0; i < persons.length; i++) {
+                PersonConfigItem person = this.personRepository.findOne(Long.valueOf(persons[i]));
+                if (person != null) {
+                    personList.add(person);
+                }
+            }
+            personList.forEach(person -> {
+                OwnedRelation belongToRelation = new OwnedRelation();
+                belongToRelation.setAbstractEntity(item);
+                belongToRelation.setPerson(person);
+                belongToRelation.setRemark("业务接口人");
+                item.getOwnedRelationSet().add(belongToRelation);
+            });
+        }
+        if (ToyUtil.isNotEmpty(item.getBizRelationIdStr())) {
+            String[] persons = item.getBizRelationIdStr().split(CommonConstant.COMMA);
+            List<PersonConfigItem> personList = new ArrayList<>(persons.length);
+            for (int i = 0; i < persons.length; i++) {
+                PersonConfigItem person = this.personRepository.findOne(Long.valueOf(persons[i]));
+                if (person != null) {
+                    personList.add(person);
+                }
+            }
+            personList.forEach(person -> {
+                OwnedRelation belongToRelation = new OwnedRelation();
+                belongToRelation.setAbstractEntity(item);
+                belongToRelation.setPerson(person);
+                belongToRelation.setRemark("业务关系人");
+                item.getOwnedRelationSet().add(belongToRelation);
+            });
+        }
+    }
 
     @Override
     public BizSystemConfigItem save(BizSystemConfigItem item) {
+        constructBizSystemPersonRelation(item);
+
+        //部署关系非空
+        if (ToyUtil.isNotEmpty(item.getServerIdStr())) {
+            String[] servers = item.getServerIdStr().split(CommonConstant.COMMA);
+            List<ServerConfigItem> serverConfigItems = new ArrayList<>(servers.length);
+            for (int i = 0; i < servers.length; i++) {
+                ServerConfigItem serverConfigItem = this.serverService.findOne(Long.valueOf(servers[i]));
+                if (serverConfigItems != null) {
+                    serverConfigItems.add(serverConfigItem);
+                }
+            }
+            serverConfigItems.forEach(serverConfigItem -> {
+                DeployOnRelation deployOnRelation = new DeployOnRelation();
+                deployOnRelation.setBizSystem(item);
+                deployOnRelation.setServer(serverConfigItem);
+                item.getServerSet().add(deployOnRelation);
+            });
+        }
+
         BizSystemConfigItem persist = bizSystemRepository.save(item);
         return persist;
     }
@@ -95,21 +165,6 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
 
             int target = i;
             i++;
-            if (bizSystem.getPersonSet() != null) {
-                for (BelongToRelation relation : bizSystem.getPersonSet()) {
-                    Map<String, Object> actor = ToyUtil.map("title", relation.getPerson().getName(), "label", CiLabelConstant.PERSON);
-                    actor.put("image", "assets/img/person.svg");
-                    int source = nodes.indexOf(actor);
-                    if (source == -1) {
-                        nodes.add(actor);
-                        source = i++;
-                    }
-
-                    Map<String, Object> linkMap = ToyUtil.map("source", source, "target", target);
-                    linkMap.put("relation", CiRelationConstant.BELONG_TO);
-                    rels.add(linkMap);
-                }
-            }
             if (bizSystem.getServerSet() != null) {
                 for (DeployOnRelation relation : bizSystem.getServerSet()) {
                     Map<String, Object> server = ToyUtil.map("title", relation.getServer().getName(), "label", CiLabelConstant.SERVER);
@@ -124,13 +179,32 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
                     rels.add(linkMap);
                 }
             }
+            if (bizSystem.getOwnedRelationSet() != null) {
+                for (OwnedRelation relation : bizSystem.getOwnedRelationSet()) {
+                    Map<String, Object> person = ToyUtil.map("title", relation.getPerson().getName(), "label", CiLabelConstant.PERSON);
+                    person.put("image", "assets/img/person.svg");
+                    int source = nodes.indexOf(person);
+                    if (source == -1) {
+                        nodes.add(person);
+                        source = i++;
+                    }
+                    Map<String, Object> linkMap = ToyUtil.map("source", source, "target", target);
+                    linkMap.put("relation", CiRelationConstant.OWNED);
+                    rels.add(linkMap);
+                }
+            }
         }
         return ToyUtil.map("nodes", nodes, "links", rels);
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> graph(int limit) {
-        Collection<BizSystemConfigItem> result = bizSystemRepository.graph(limit);
+    public Map<String, Object> graph(Long id, int limit) {
+        Collection<BizSystemConfigItem> result;
+        if (id == null) {
+            result = bizSystemRepository.graph(limit);
+        } else {
+            result = bizSystemRepository.graph(id, limit);
+        }
         return toD3Format(result);
 
     }
