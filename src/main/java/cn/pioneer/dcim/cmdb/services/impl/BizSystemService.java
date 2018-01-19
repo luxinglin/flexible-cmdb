@@ -1,7 +1,7 @@
 package cn.pioneer.dcim.cmdb.services.impl;
 
 import cn.pioneer.dcim.cmdb.common.constants.CiRelationConst;
-import cn.pioneer.dcim.cmdb.common.constants.CommonConst;
+import cn.pioneer.dcim.cmdb.common.constants.CommConst;
 import cn.pioneer.dcim.cmdb.common.graph.GraphLink;
 import cn.pioneer.dcim.cmdb.common.graph.GraphNode;
 import cn.pioneer.dcim.cmdb.common.graph.GraphResult;
@@ -52,7 +52,7 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
     private void constructBizSystemPersonRelation(BizSystemConfigItem item) {
         //业务接口人信息
         if (ToyUtil.isNotEmpty(item.getBizContactIdStr())) {
-            String[] persons = item.getBizContactIdStr().split(CommonConst.COMMA);
+            String[] persons = item.getBizContactIdStr().split(CommConst.COMMA);
             List<PersonConfigItem> personList = new ArrayList<>(persons.length);
             for (int i = 0; i < persons.length; i++) {
                 PersonConfigItem person = this.personRepository.findOne(Long.valueOf(persons[i]));
@@ -69,7 +69,7 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
             });
         }
         if (ToyUtil.isNotEmpty(item.getBizRelationIdStr())) {
-            String[] persons = item.getBizRelationIdStr().split(CommonConst.COMMA);
+            String[] persons = item.getBizRelationIdStr().split(CommConst.COMMA);
             List<PersonConfigItem> personList = new ArrayList<>(persons.length);
             for (int i = 0; i < persons.length; i++) {
                 PersonConfigItem person = this.personRepository.findOne(Long.valueOf(persons[i]));
@@ -93,7 +93,7 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
 
         //部署关系非空
         if (ToyUtil.isNotEmpty(item.getServerIdStr())) {
-            String[] servers = item.getServerIdStr().split(CommonConst.COMMA);
+            String[] servers = item.getServerIdStr().split(CommConst.COMMA);
             List<ServerConfigItem> serverConfigItems = new ArrayList<>(servers.length);
             for (int i = 0; i < servers.length; i++) {
                 ServerConfigItem serverConfigItem = this.serverService.findOne(Long.valueOf(servers[i]));

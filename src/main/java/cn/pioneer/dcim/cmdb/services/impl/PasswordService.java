@@ -1,6 +1,6 @@
 package cn.pioneer.dcim.cmdb.services.impl;
 
-import cn.pioneer.dcim.cmdb.common.constants.CommonConst;
+import cn.pioneer.dcim.cmdb.common.constants.CommConst;
 import cn.pioneer.dcim.cmdb.common.util.ToyUtil;
 import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
 import cn.pioneer.dcim.cmdb.domain.entity.BizSystemConfigItem;
@@ -39,7 +39,7 @@ public class PasswordService implements ConfigItemAble<PasswordConfigItem> {
     public PasswordConfigItem save(PasswordConfigItem item) {
         List<AbstractConfigItem> list = new ArrayList<>(8);
         if (ToyUtil.isNotEmpty(item.getServerIdStr())) {
-            String[] servers = item.getServerIdStr().split(CommonConst.COMMA);
+            String[] servers = item.getServerIdStr().split(CommConst.COMMA);
             for (int i = 0; i < servers.length; i++) {
                 ServerConfigItem serverConfigItem = serverService.findOne(Long.valueOf(servers[i]));
                 if (serverConfigItem != null) {
@@ -48,7 +48,7 @@ public class PasswordService implements ConfigItemAble<PasswordConfigItem> {
             }
         }
         if (ToyUtil.isNotEmpty(item.getBizSystemIdStr())) {
-            String[] bizSystems = item.getBizSystemIdStr().split(CommonConst.COMMA);
+            String[] bizSystems = item.getBizSystemIdStr().split(CommConst.COMMA);
             for (int i = 0; i < bizSystems.length; i++) {
                 BizSystemConfigItem bizSystemConfigItem = bizSystemService.findOne(Long.valueOf(bizSystems[i]));
                 if (bizSystemConfigItem != null) {

@@ -8,7 +8,7 @@ import cn.pioneer.dcim.cmdb.domain.entity.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-import static cn.pioneer.dcim.cmdb.common.constants.CommonConst.NEW_LINE;
+import static cn.pioneer.dcim.cmdb.common.constants.CommConst.NEW_LINE;
 
 /**
  * @author luxinglin

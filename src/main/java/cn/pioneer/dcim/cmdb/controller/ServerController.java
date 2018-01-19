@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @RestController
 @RequestMapping("/servers")
-public class ServerConfigController {
+public class ServerController {
     @Autowired
     ServerService serverService;
 
