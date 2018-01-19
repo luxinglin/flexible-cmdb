@@ -1,17 +1,19 @@
 package cn.pioneer.dcim.cmdb.common.emun;
 
 /**
- * 服务器类型
  * @author luxinglin
- * @since 2018-01-10
- */
-public enum ServerTypeEnum {
-    VIRTUAL_MACHINE("VIRTUAL_MACHINE", "虚拟机", 1), PHYSICAL_MACHINE("PHYSICAL_MACHINE", "物理机", 2);
+ * @version 1.0
+ * @Description: 网络设备类型
+ * @create 2018-01-19 16:29
+ **/
+public enum NetworkTypeEnum {
+    SWITCH("SWITCH", "交换机", 1), ROUTER("ROUTER", "路由器", 2);
+
     private String code;
     private String name;
     private int index;
 
-    ServerTypeEnum(String code, String name, int index) {
+    NetworkTypeEnum(String code, String name, int index) {
         this.code = code;
         this.name = name;
         this.index = index;

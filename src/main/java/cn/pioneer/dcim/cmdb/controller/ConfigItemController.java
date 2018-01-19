@@ -18,7 +18,6 @@ public class ConfigItemController {
     @Autowired
     CommConfigItemService configItemService;
 
-
     /**
      * 获取系统中支持的配置项类型
      *

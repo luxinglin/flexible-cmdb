@@ -134,6 +134,18 @@ public class CmdbUtil {
         if (configItem instanceof ServerConfigItem) {
             return "主机名称：" + configItem.getName();
         }
+        if (configItem instanceof NetworkConfigItem) {
+            return "设备名称：" + configItem.getName();
+        }
+        if (configItem instanceof StorageConfigItem) {
+            return "存储名称：" + configItem.getName();
+        }
+        if (configItem instanceof MiddlewareConfigItem) {
+            return "中间件名称：" + configItem.getName();
+        }
+        if (configItem instanceof PasswordConfigItem) {
+            return "密码名称：" + configItem.getName();
+        }
 
         return "";
     }

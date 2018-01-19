@@ -4,7 +4,9 @@ import cn.pioneer.dcim.cmdb.neo4j.domain.AbstractConfigItem;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 /**
- * @author Mark Angrish
+ * @author luxinglin
+ * @Description 用户配置项，从集成系统进行同步
+ * @since 2018-01-18
  */
 @NodeEntity
 public class PersonConfigItem extends AbstractConfigItem {

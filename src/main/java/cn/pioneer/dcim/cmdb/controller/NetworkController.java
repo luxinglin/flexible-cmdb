@@ -2,7 +2,7 @@ package cn.pioneer.dcim.cmdb.controller;
 
 import cn.pioneer.dcim.cmdb.common.RestfulResult;
 import cn.pioneer.dcim.cmdb.common.util.CmdbUtil;
-import cn.pioneer.dcim.cmdb.neo4j.domain.entity.ServerConfigItem;
+import cn.pioneer.dcim.cmdb.neo4j.domain.entity.NetworkConfigItem;
 import cn.pioneer.dcim.cmdb.services.ConfigItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,34 +17,34 @@ import java.util.List;
 /**
  * @author luxinglin
  * @version 1.0
- * @Description: 服务器信息操作类
- * @create 2018-01-12 18:04
+ * @Description: TODO
+ * @create 2018-01-19 15:21
  **/
 @RestController
-@RequestMapping("/servers")
-public class ServerController {
+@RequestMapping("/networks")
+public class NetworkController {
     @Autowired
-    @Qualifier("serverService")
-    ConfigItemService<ServerConfigItem> serverService;
+    @Qualifier("networkService")
+    ConfigItemService<NetworkConfigItem> networkService;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public RestfulResult save(ServerConfigItem serverConfigItem,
+    public RestfulResult save(NetworkConfigItem configItem,
                               HttpServletRequest request) {
         //构造更新信息
-        CmdbUtil.patchUpdateInfo(serverConfigItem, request);
-        ServerConfigItem persist = serverService.save(serverConfigItem);
+        CmdbUtil.patchUpdateInfo(configItem, request);
+        NetworkConfigItem persist = networkService.save(configItem);
         return new RestfulResult(persist);
     }
 
     /**
-     * @param serverConfigItem
+     * @param configItem
      * @param request
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public RestfulResult get(ServerConfigItem serverConfigItem,
+    public RestfulResult get(NetworkConfigItem configItem,
                              HttpServletRequest request) {
-        List<ServerConfigItem> persist = serverService.findList(serverConfigItem);
+        List<NetworkConfigItem> persist = networkService.findList(configItem);
         return new RestfulResult(persist);
     }
 
@@ -56,7 +56,7 @@ public class ServerController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public RestfulResult delete(@PathVariable("id") Long id,
                                 HttpServletRequest request) {
-        serverService.delete(id);
+        networkService.delete(id);
         return new RestfulResult();
     }
 }

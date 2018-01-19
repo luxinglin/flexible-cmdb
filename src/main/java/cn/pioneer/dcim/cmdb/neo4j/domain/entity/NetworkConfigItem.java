@@ -1,6 +1,9 @@
 package cn.pioneer.dcim.cmdb.neo4j.domain.entity;
 
+import cn.pioneer.dcim.cmdb.common.constants.CiRelationConst;
 import cn.pioneer.dcim.cmdb.neo4j.domain.AbstractConfigItem;
+import cn.pioneer.dcim.cmdb.neo4j.domain.Networkable;
+import cn.pioneer.dcim.cmdb.neo4j.domain.relationship.NetworkLinkRelation;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -16,7 +19,7 @@ import java.util.List;
  */
 
 @NodeEntity
-public class NetworkConfigItem extends AbstractConfigItem {
+public class NetworkConfigItem extends AbstractConfigItem implements Networkable {
     /**
      * 序列号
      */
@@ -39,10 +42,34 @@ public class NetworkConfigItem extends AbstractConfigItem {
      */
     private String manageIp;
     /**
-     * 网络设备间连接
+     * 运行状态
      */
-    @Relationship(type = "NETWORK_LINK")
-    private List<NetworkConfigItem> networks = new ArrayList<>();
+    private String runStatus;
+    /**
+     * 所在位置
+     */
+    private String locationDesc;
+    /**
+     * 用途
+     */
+    private String usePurpose;
+    /**
+     * 端口数
+     */
+    private Integer portNum;
+    /**
+     * 传输速率
+     */
+    private String transmissionSpeed;
+    /**
+     * 传输模式
+     */
+    private String transmissionMode;
+    /**
+     * 网络设备连接
+     */
+    @Relationship(type = CiRelationConst.NETWORK_LINK)
+    private List<NetworkLinkRelation> networks = new ArrayList<>();
 
     public String getSn() {
         return sn;
@@ -84,12 +111,59 @@ public class NetworkConfigItem extends AbstractConfigItem {
         this.manageIp = manageIp;
     }
 
-    public List<NetworkConfigItem> getNetworks() {
+    public String getRunStatus() {
+        return runStatus;
+    }
+
+    public void setRunStatus(String runStatus) {
+        this.runStatus = runStatus;
+    }
+
+    public String getLocationDesc() {
+        return locationDesc;
+    }
+
+    public void setLocationDesc(String locationDesc) {
+        this.locationDesc = locationDesc;
+    }
+
+    public String getUsePurpose() {
+        return usePurpose;
+    }
+
+    public void setUsePurpose(String usePurpose) {
+        this.usePurpose = usePurpose;
+    }
+
+    public Integer getPortNum() {
+        return portNum;
+    }
+
+    public void setPortNum(Integer portNum) {
+        this.portNum = portNum;
+    }
+
+    public String getTransmissionSpeed() {
+        return transmissionSpeed;
+    }
+
+    public void setTransmissionSpeed(String transmissionSpeed) {
+        this.transmissionSpeed = transmissionSpeed;
+    }
+
+    public String getTransmissionMode() {
+        return transmissionMode;
+    }
+
+    public void setTransmissionMode(String transmissionMode) {
+        this.transmissionMode = transmissionMode;
+    }
+
+    public List<NetworkLinkRelation> getNetworks() {
         return networks;
     }
 
-    public void setNetworks(List<NetworkConfigItem> networks) {
+    public void setNetworks(List<NetworkLinkRelation> networks) {
         this.networks = networks;
     }
-
 }

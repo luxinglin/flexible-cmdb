@@ -94,6 +94,7 @@ public class SysUser2PersonConfigItemJob {
                         configItem.setId(matched.getId());
                         needUpdate.add(configItem);
                     } else {//没有匹配的新增
+                        configItem.setDataSource("COSPlat云资源管理平台");
                         needAdd.add(configItem);
                     }
                 }

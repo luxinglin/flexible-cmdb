@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.Transient;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -29,7 +30,6 @@ public abstract class AbstractConfigItem {
     /**
      * 配置项名称
      */
-//    @Indexed(unique = false,indexType = IndexType.FULLTEXT, indexName = "wordName")
     @Index
     private String name;
     /**
@@ -46,6 +46,11 @@ public abstract class AbstractConfigItem {
      */
     @Relationship(type = CiRelationConst.OWNED)
     private Set<OwnedRelation> ownedRelationSet = new HashSet<>();
+    /**
+     * 责任人
+     */
+    @Transient
+    private String ownerName;
     /**
      * 来源
      */
@@ -177,5 +182,13 @@ public abstract class AbstractConfigItem {
 
     public void setOwnedRelationSet(Set<OwnedRelation> ownedRelationSet) {
         this.ownedRelationSet = ownedRelationSet;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 }

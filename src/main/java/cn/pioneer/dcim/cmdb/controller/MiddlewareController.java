@@ -2,7 +2,7 @@ package cn.pioneer.dcim.cmdb.controller;
 
 import cn.pioneer.dcim.cmdb.common.RestfulResult;
 import cn.pioneer.dcim.cmdb.common.util.CmdbUtil;
-import cn.pioneer.dcim.cmdb.neo4j.domain.entity.ServerConfigItem;
+import cn.pioneer.dcim.cmdb.neo4j.domain.entity.MiddlewareConfigItem;
 import cn.pioneer.dcim.cmdb.services.ConfigItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,34 +17,34 @@ import java.util.List;
 /**
  * @author luxinglin
  * @version 1.0
- * @Description: 服务器信息操作类
- * @create 2018-01-12 18:04
+ * @Description: TODO
+ * @create 2018-01-19 15:24
  **/
 @RestController
-@RequestMapping("/servers")
-public class ServerController {
+@RequestMapping("middlewares")
+public class MiddlewareController {
     @Autowired
-    @Qualifier("serverService")
-    ConfigItemService<ServerConfigItem> serverService;
+    @Qualifier("middlewareService")
+    ConfigItemService<MiddlewareConfigItem> middlewareService;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public RestfulResult save(ServerConfigItem serverConfigItem,
+    public RestfulResult save(MiddlewareConfigItem configItem,
                               HttpServletRequest request) {
         //构造更新信息
-        CmdbUtil.patchUpdateInfo(serverConfigItem, request);
-        ServerConfigItem persist = serverService.save(serverConfigItem);
+        CmdbUtil.patchUpdateInfo(configItem, request);
+        MiddlewareConfigItem persist = middlewareService.save(configItem);
         return new RestfulResult(persist);
     }
 
     /**
-     * @param serverConfigItem
+     * @param configItem
      * @param request
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public RestfulResult get(ServerConfigItem serverConfigItem,
+    public RestfulResult get(MiddlewareConfigItem configItem,
                              HttpServletRequest request) {
-        List<ServerConfigItem> persist = serverService.findList(serverConfigItem);
+        List<MiddlewareConfigItem> persist = middlewareService.findList(configItem);
         return new RestfulResult(persist);
     }
 
@@ -56,7 +56,7 @@ public class ServerController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public RestfulResult delete(@PathVariable("id") Long id,
                                 HttpServletRequest request) {
-        serverService.delete(id);
+        middlewareService.delete(id);
         return new RestfulResult();
     }
 }

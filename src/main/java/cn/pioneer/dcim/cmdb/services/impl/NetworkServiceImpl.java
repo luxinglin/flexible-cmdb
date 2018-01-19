@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Pageable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public class NetworkServiceImpl implements ConfigItemService<NetworkConfigItem> 
 
     @Override
     public NetworkConfigItem save(NetworkConfigItem item) {
-        return null;
+        return networkRepository.save(item);
     }
 
     @Override
@@ -37,7 +39,7 @@ public class NetworkServiceImpl implements ConfigItemService<NetworkConfigItem> 
 
     @Override
     public void delete(Long id) {
-
+        networkRepository.delete(id);
     }
 
     @Override
@@ -52,7 +54,15 @@ public class NetworkServiceImpl implements ConfigItemService<NetworkConfigItem> 
 
     @Override
     public List<NetworkConfigItem> findList(NetworkConfigItem param) {
-        return null;
+        Iterable<NetworkConfigItem> iterable = this.networkRepository.findAll();
+        if (iterable == null) {
+            return Collections.emptyList();
+        }
+        List<NetworkConfigItem> result = new ArrayList<>();
+        iterable.forEach(item -> {
+            result.add(item);
+        });
+        return result;
     }
 
     @Override

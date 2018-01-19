@@ -35,11 +35,31 @@ public class PasswordConfigItem extends AbstractConfigItem {
      */
     @Relationship(type = CiRelationConst.PASSWORD_FOR)
     private Set<PasswordForRelation> passwordForRelations = new HashSet<>();
-
+    /**
+     * 业务系统密码
+     */
     @Transient
     private String bizSystemIdStr;
+    /**
+     * 服务器密码
+     */
     @Transient
     private String serverIdStr;
+    /**
+     * 网络设备密码
+     */
+    @Transient
+    private String networkIdStr;
+    /**
+     * 中间件密码
+     */
+    @Transient
+    private String middlewareIdStr;
+    /**
+     * 存储设备密码
+     */
+    @Transient
+    private String storageIdStr;
 
     public String getUserName() {
         return userName;
@@ -87,5 +107,29 @@ public class PasswordConfigItem extends AbstractConfigItem {
 
     public void setServerIdStr(String serverIdStr) {
         this.serverIdStr = serverIdStr;
+    }
+
+    public String getNetworkIdStr() {
+        return networkIdStr;
+    }
+
+    public void setNetworkIdStr(String networkIdStr) {
+        this.networkIdStr = networkIdStr;
+    }
+
+    public String getMiddlewareIdStr() {
+        return middlewareIdStr;
+    }
+
+    public void setMiddlewareIdStr(String middlewareIdStr) {
+        this.middlewareIdStr = middlewareIdStr;
+    }
+
+    public String getStorageIdStr() {
+        return storageIdStr;
+    }
+
+    public void setStorageIdStr(String storageIdStr) {
+        this.storageIdStr = storageIdStr;
     }
 }

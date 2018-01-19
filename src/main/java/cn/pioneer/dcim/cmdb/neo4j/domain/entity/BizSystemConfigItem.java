@@ -43,6 +43,9 @@ public class BizSystemConfigItem extends AbstractConfigItem {
      */
     @Transient
     private String bizRelationIdStr;
+    /**
+     * 部署服务器
+     */
     @Transient
     private String serverIdStr;
 

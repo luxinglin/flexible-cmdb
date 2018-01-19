@@ -2,10 +2,14 @@ package cn.pioneer.dcim.cmdb.services.impl;
 
 import cn.pioneer.dcim.cmdb.common.graph.GraphResult;
 import cn.pioneer.dcim.cmdb.neo4j.domain.entity.StorageConfigItem;
+import cn.pioneer.dcim.cmdb.neo4j.repositories.StorageRepository;
 import cn.pioneer.dcim.cmdb.services.ConfigItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Pageable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,10 +20,12 @@ import java.util.List;
  **/
 @Service("storageService")
 public class StorageServiceImpl implements ConfigItemService<StorageConfigItem> {
+    @Autowired
+    StorageRepository storageRepository;
 
     @Override
     public StorageConfigItem save(StorageConfigItem item) {
-        return null;
+        return storageRepository.save(item);
     }
 
     @Override
@@ -34,7 +40,7 @@ public class StorageServiceImpl implements ConfigItemService<StorageConfigItem> 
 
     @Override
     public void delete(Long id) {
-
+        storageRepository.delete(id);
     }
 
     @Override
@@ -49,7 +55,15 @@ public class StorageServiceImpl implements ConfigItemService<StorageConfigItem> 
 
     @Override
     public List<StorageConfigItem> findList(StorageConfigItem param) {
-        return null;
+        Iterable<StorageConfigItem> iterable = this.storageRepository.findAll();
+        if (iterable == null) {
+            return Collections.emptyList();
+        }
+        List<StorageConfigItem> result = new ArrayList<>();
+        iterable.forEach(item -> {
+            result.add(item);
+        });
+        return result;
     }
 
     @Override

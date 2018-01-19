@@ -3,12 +3,16 @@ package cn.pioneer.dcim.cmdb.neo4j.domain.entity;
 import cn.pioneer.dcim.cmdb.common.constants.CiRelationConst;
 import cn.pioneer.dcim.cmdb.common.emun.ServerTypeEnum;
 import cn.pioneer.dcim.cmdb.neo4j.domain.AbstractConfigItem;
+import cn.pioneer.dcim.cmdb.neo4j.domain.Networkable;
+import cn.pioneer.dcim.cmdb.neo4j.domain.relationship.MiddlewareRunOnRelation;
+import cn.pioneer.dcim.cmdb.neo4j.domain.relationship.NetworkLinkRelation;
+import cn.pioneer.dcim.cmdb.neo4j.domain.relationship.StorageLinkRelation;
 import cn.pioneer.dcim.cmdb.neo4j.domain.relationship.VirtualOnRelation;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.Transient;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,7 +20,7 @@ import java.util.Set;
  * @since 2018-01-09
  */
 @NodeEntity
-public class ServerConfigItem extends AbstractConfigItem {
+public class ServerConfigItem extends AbstractConfigItem implements Networkable {
     /**
      * UUID
      */
@@ -90,12 +94,30 @@ public class ServerConfigItem extends AbstractConfigItem {
      * 物理机-虚拟机关系
      */
     @Relationship(type = CiRelationConst.VIRTUAL_ON)
-    private Set<VirtualOnRelation> serverSet;
+    private Set<VirtualOnRelation> serverSet = new HashSet<>();
     /**
      * 服务器-网络交换机连接关系
      */
-    @Relationship(type = "SERVER_NETWORK_LINK", direction = Relationship.INCOMING)
-    private List<NetworkConfigItem> networks = new ArrayList<>();
+    @Relationship(type = CiRelationConst.NETWORK_LINK)
+    private Set<NetworkLinkRelation> networks = new HashSet<>();
+    /**
+     * 服务器-存储连接关系
+     */
+    @Relationship(type = CiRelationConst.STORAGE_LINK)
+    private Set<StorageLinkRelation> storages = new HashSet<>();
+    /**
+     * 服务器-中间件运行关系
+     */
+    @Relationship(type = CiRelationConst.MIDDLEWARE_RUN_ON)
+    private Set<MiddlewareRunOnRelation> middlewares = new HashSet<>();
+    @Transient
+    private String ownerIdStr;
+    @Transient
+    private String networkIdStr;
+    @Transient
+    private String storageIdStr;
+    @Transient
+    private String bizSystemIdStr;
 
     public String getUuid() {
         return uuid;
@@ -129,11 +151,171 @@ public class ServerConfigItem extends AbstractConfigItem {
         this.model = model;
     }
 
-    public List<NetworkConfigItem> getNetworks() {
+    public ServerTypeEnum getServerTypeEnum() {
+        return serverTypeEnum;
+    }
+
+    public void setServerTypeEnum(ServerTypeEnum serverTypeEnum) {
+        this.serverTypeEnum = serverTypeEnum;
+    }
+
+    public String getManageIP() {
+        return manageIP;
+    }
+
+    public void setManageIP(String manageIP) {
+        this.manageIP = manageIP;
+    }
+
+    public String getRunStatus() {
+        return runStatus;
+    }
+
+    public void setRunStatus(String runStatus) {
+        this.runStatus = runStatus;
+    }
+
+    public String getLocationDesc() {
+        return locationDesc;
+    }
+
+    public void setLocationDesc(String locationDesc) {
+        this.locationDesc = locationDesc;
+    }
+
+    public String getUsePurpose() {
+        return usePurpose;
+    }
+
+    public void setUsePurpose(String usePurpose) {
+        this.usePurpose = usePurpose;
+    }
+
+    public String getOsFamily() {
+        return osFamily;
+    }
+
+    public void setOsFamily(String osFamily) {
+        this.osFamily = osFamily;
+    }
+
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
+    }
+
+    public Integer getCpuNum() {
+        return cpuNum;
+    }
+
+    public void setCpuNum(Integer cpuNum) {
+        this.cpuNum = cpuNum;
+    }
+
+    public String getMemory() {
+        return memory;
+    }
+
+    public void setMemory(String memory) {
+        this.memory = memory;
+    }
+
+    public Integer getDiskNum() {
+        return diskNum;
+    }
+
+    public void setDiskNum(Integer diskNum) {
+        this.diskNum = diskNum;
+    }
+
+    public String getDiskInitSize() {
+        return diskInitSize;
+    }
+
+    public void setDiskInitSize(String diskInitSize) {
+        this.diskInitSize = diskInitSize;
+    }
+
+    public String getNetworkCardModel() {
+        return networkCardModel;
+    }
+
+    public void setNetworkCardModel(String networkCardModel) {
+        this.networkCardModel = networkCardModel;
+    }
+
+    public Integer getNetworkCardNum() {
+        return networkCardNum;
+    }
+
+    public void setNetworkCardNum(Integer networkCardNum) {
+        this.networkCardNum = networkCardNum;
+    }
+
+    public Set<VirtualOnRelation> getServerSet() {
+        return serverSet;
+    }
+
+    public void setServerSet(Set<VirtualOnRelation> serverSet) {
+        this.serverSet = serverSet;
+    }
+
+    public Set<NetworkLinkRelation> getNetworks() {
         return networks;
     }
 
-    public void setNetworks(List<NetworkConfigItem> networks) {
+    public void setNetworks(Set<NetworkLinkRelation> networks) {
         this.networks = networks;
+    }
+
+    public Set<StorageLinkRelation> getStorages() {
+        return storages;
+    }
+
+    public void setStorages(Set<StorageLinkRelation> storages) {
+        this.storages = storages;
+    }
+
+    public String getOwnerIdStr() {
+        return ownerIdStr;
+    }
+
+    public void setOwnerIdStr(String ownerIdStr) {
+        this.ownerIdStr = ownerIdStr;
+    }
+
+    public String getNetworkIdStr() {
+        return networkIdStr;
+    }
+
+    public void setNetworkIdStr(String networkIdStr) {
+        this.networkIdStr = networkIdStr;
+    }
+
+    public String getStorageIdStr() {
+        return storageIdStr;
+    }
+
+    public void setStorageIdStr(String storageIdStr) {
+        this.storageIdStr = storageIdStr;
+    }
+
+    public String getBizSystemIdStr() {
+        return bizSystemIdStr;
+    }
+
+    public void setBizSystemIdStr(String bizSystemIdStr) {
+        this.bizSystemIdStr = bizSystemIdStr;
+    }
+
+    public Set<MiddlewareRunOnRelation> getMiddlewares() {
+        return middlewares;
+    }
+
+    public void setMiddlewares(Set<MiddlewareRunOnRelation> middlewares) {
+        this.middlewares = middlewares;
     }
 }
