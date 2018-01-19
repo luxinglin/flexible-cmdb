@@ -1,6 +1,6 @@
 package cn.pioneer.dcim.cmdb.domain.entity;
 
-import cn.pioneer.dcim.cmdb.common.constants.CiRelationConstant;
+import cn.pioneer.dcim.cmdb.common.constants.CiRelationConst;
 import cn.pioneer.dcim.cmdb.common.emun.ServerTypeEnum;
 import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
 import cn.pioneer.dcim.cmdb.domain.relationship.VirtualOnRelation;
@@ -89,7 +89,7 @@ public class ServerConfigItem extends AbstractConfigItem {
     /**
      * 物理机-虚拟机关系
      */
-    @Relationship(type = CiRelationConstant.VIRTUAL_ON)
+    @Relationship(type = CiRelationConst.VIRTUAL_ON)
     private Set<VirtualOnRelation> serverSet;
     /**
      * 服务器-网络交换机连接关系

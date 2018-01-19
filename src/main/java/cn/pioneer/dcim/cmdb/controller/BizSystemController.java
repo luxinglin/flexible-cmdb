@@ -1,14 +1,16 @@
 package cn.pioneer.dcim.cmdb.controller;
 
 import cn.pioneer.dcim.cmdb.common.RestfulResult;
-import cn.pioneer.dcim.cmdb.common.util.PatchUpdateInfoUtil;
+import cn.pioneer.dcim.cmdb.common.util.CmdbUtil;
 import cn.pioneer.dcim.cmdb.domain.entity.BizSystemConfigItem;
 import cn.pioneer.dcim.cmdb.services.impl.BizSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * 业务系统操作类
@@ -33,7 +35,7 @@ public class BizSystemController {
     public RestfulResult save(BizSystemConfigItem bizSystem,
                               HttpServletRequest request) {
         //构造更新信息
-        PatchUpdateInfoUtil.patch(bizSystem, request);
+        CmdbUtil.patchUpdateInfo(bizSystem, request);
         BizSystemConfigItem persist = bizSystemService.save(bizSystem);
         return new RestfulResult(persist);
     }
@@ -72,14 +74,5 @@ public class BizSystemController {
         return new RestfulResult();
     }
 
-    /**
-     * 图形数据查找
-     *
-     * @param limit
-     * @return
-     */
-    @RequestMapping("/graph")
-    public Map<String, Object> graph(@RequestParam(value = "limit", required = false) Integer limit) {
-        return bizSystemService.graph(null, limit == null ? 100 : limit);
-    }
+
 }

@@ -84,6 +84,7 @@
 
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8" type="text/javascript"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script type="text/javascript">
     /**
      * 筛选出ci信息
@@ -105,8 +106,12 @@
                         var idx = 0;
                         data.data.forEach(function (item) {
                             if (idx == 0) {
-                                d3.json("/graph/BizSystem/" + item.value, function (error, graph) {
-                                    drawGraph(error, graph);
+                                d3.json("/graph/" + val + "/" + item.value, function (error, result) {
+                                    if (result.status) {
+                                        drawGraph(error, result.data);
+                                    } else {
+                                        alert("获取图形数据失败");
+                                    }
                                 });
                             }
                             idx++;
@@ -151,10 +156,18 @@
             }
         });
 
+        /**
+         * 配置项切换时候，刷新图形界面
+         */
         $("#ciSelect").on("change", function () {
+            var ciType = $("#ciTypeSelect").val();
             var id = $("#ciSelect").val();
-            d3.json("/graph/BizSystem/" + id, function (error, graph) {
-                drawGraph(error, graph);
+            d3.json("/graph/" + ciType + "/" + id, function (error, result) {
+                if (result.status) {
+                    drawGraph(error, result.data);
+                } else {
+                    alert("获取图形数据事变")
+                }
             });
         })
     });
@@ -163,9 +176,10 @@
     var width = 800, height = 800;
 
     function drawGraph(error, graph) {
-        if (error) return;
-
         $("#graph").empty();
+        if (error) return;
+        if (graph == null) return;
+
         var svg = d3.select("#graph").append("svg")
             .attr("width", "100%").attr("height", "100%")
             .attr("pointer-events", "all");
@@ -222,7 +236,7 @@
         // html title attribute
         node.append("title")
             .text(function (d) {
-                return d.title;
+                return d.tips;
             });
 
         var text_dx = -20;

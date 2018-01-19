@@ -1,7 +1,7 @@
 package cn.pioneer.dcim.cmdb.controller;
 
 import cn.pioneer.dcim.cmdb.common.RestfulResult;
-import cn.pioneer.dcim.cmdb.common.util.PatchUpdateInfoUtil;
+import cn.pioneer.dcim.cmdb.common.util.CmdbUtil;
 import cn.pioneer.dcim.cmdb.domain.entity.PasswordConfigItem;
 import cn.pioneer.dcim.cmdb.services.impl.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class PasswordController {
     public RestfulResult save(PasswordConfigItem passwordConfigItem,
                               HttpServletRequest request) {
         //构造更新信息
-        PatchUpdateInfoUtil.patch(passwordConfigItem, request);
+        CmdbUtil.patchUpdateInfo(passwordConfigItem, request);
         PasswordConfigItem persist = passwordService.save(passwordConfigItem);
         return new RestfulResult(persist);
     }

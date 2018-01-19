@@ -1,6 +1,6 @@
 package cn.pioneer.dcim.cmdb.domain.entity;
 
-import cn.pioneer.dcim.cmdb.common.constants.CiRelationConstant;
+import cn.pioneer.dcim.cmdb.common.constants.CiRelationConst;
 import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
 import cn.pioneer.dcim.cmdb.domain.relationship.DeployOnRelation;
 import org.neo4j.ogm.annotation.Index;
@@ -31,7 +31,7 @@ public class BizSystemConfigItem extends AbstractConfigItem {
     /**
      * 部署在xx服务器上
      */
-    @Relationship(type = CiRelationConstant.DEPLOY_ON)
+    @Relationship(type = CiRelationConst.DEPLOY_ON)
     private Set<DeployOnRelation> serverSet = new HashSet<>();
     /**
      * 业务接口人

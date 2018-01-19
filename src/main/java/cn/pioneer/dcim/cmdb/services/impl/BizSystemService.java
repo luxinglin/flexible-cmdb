@@ -1,8 +1,11 @@
 package cn.pioneer.dcim.cmdb.services.impl;
 
-import cn.pioneer.dcim.cmdb.common.constants.CiLabelConstant;
-import cn.pioneer.dcim.cmdb.common.constants.CiRelationConstant;
-import cn.pioneer.dcim.cmdb.common.constants.CommonConstant;
+import cn.pioneer.dcim.cmdb.common.constants.CiRelationConst;
+import cn.pioneer.dcim.cmdb.common.constants.CommonConst;
+import cn.pioneer.dcim.cmdb.common.graph.GraphLink;
+import cn.pioneer.dcim.cmdb.common.graph.GraphNode;
+import cn.pioneer.dcim.cmdb.common.graph.GraphResult;
+import cn.pioneer.dcim.cmdb.common.util.CmdbUtil;
 import cn.pioneer.dcim.cmdb.common.util.ToyUtil;
 import cn.pioneer.dcim.cmdb.dao.BizSystemDao;
 import cn.pioneer.dcim.cmdb.domain.entity.BizSystemConfigItem;
@@ -20,7 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author luxinglin
@@ -46,7 +52,7 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
     private void constructBizSystemPersonRelation(BizSystemConfigItem item) {
         //业务接口人信息
         if (ToyUtil.isNotEmpty(item.getBizContactIdStr())) {
-            String[] persons = item.getBizContactIdStr().split(CommonConstant.COMMA);
+            String[] persons = item.getBizContactIdStr().split(CommonConst.COMMA);
             List<PersonConfigItem> personList = new ArrayList<>(persons.length);
             for (int i = 0; i < persons.length; i++) {
                 PersonConfigItem person = this.personRepository.findOne(Long.valueOf(persons[i]));
@@ -63,7 +69,7 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
             });
         }
         if (ToyUtil.isNotEmpty(item.getBizRelationIdStr())) {
-            String[] persons = item.getBizRelationIdStr().split(CommonConstant.COMMA);
+            String[] persons = item.getBizRelationIdStr().split(CommonConst.COMMA);
             List<PersonConfigItem> personList = new ArrayList<>(persons.length);
             for (int i = 0; i < persons.length; i++) {
                 PersonConfigItem person = this.personRepository.findOne(Long.valueOf(persons[i]));
@@ -87,7 +93,7 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
 
         //部署关系非空
         if (ToyUtil.isNotEmpty(item.getServerIdStr())) {
-            String[] servers = item.getServerIdStr().split(CommonConstant.COMMA);
+            String[] servers = item.getServerIdStr().split(CommonConst.COMMA);
             List<ServerConfigItem> serverConfigItems = new ArrayList<>(servers.length);
             for (int i = 0; i < servers.length; i++) {
                 ServerConfigItem serverConfigItem = this.serverService.findOne(Long.valueOf(servers[i]));
@@ -152,53 +158,52 @@ public class BizSystemService implements ConfigItemAble<BizSystemConfigItem> {
         return this.bizSystemRepository.findOne(id);
     }
 
-    private Map<String, Object> toD3Format(Collection<BizSystemConfigItem> bizSystems) {
-        List<Map<String, Object>> nodes = new ArrayList<>();
-        List<Map<String, Object>> rels = new ArrayList<>();
+    private GraphResult toD3Format(Collection<BizSystemConfigItem> bizSystems) {
+        GraphResult graphResult = new GraphResult();
         int i = 0;
         Iterator<BizSystemConfigItem> result = bizSystems.iterator();
         while (result.hasNext()) {
             BizSystemConfigItem bizSystem = result.next();
-            Map<String, Object> nodeAttrMap = ToyUtil.map("title", bizSystem.getName(), "label", CiLabelConstant.BIZSYSTEM);
-            nodeAttrMap.put("image", "assets/img/system.svg");
-            nodes.add(nodeAttrMap);
+            GraphNode graphNode = new GraphNode(bizSystem);
+            graphResult.getNodes().add(graphNode);
 
             int target = i;
             i++;
             if (bizSystem.getServerSet() != null) {
                 for (DeployOnRelation relation : bizSystem.getServerSet()) {
-                    Map<String, Object> server = ToyUtil.map("title", relation.getServer().getName(), "label", CiLabelConstant.SERVER);
-                    server.put("image", "assets/img/server.svg");
-                    int source = nodes.indexOf(server);
+                    GraphNode node = new GraphNode(relation.getServer());
+                    int source = graphResult.getNodes().indexOf(node);
                     if (source == -1) {
-                        nodes.add(server);
+                        graphResult.getNodes().add(node);
                         source = i++;
                     }
-                    Map<String, Object> linkMap = ToyUtil.map("source", source, "target", target);
-                    linkMap.put("relation", CiRelationConstant.DEPLOY_ON);
-                    rels.add(linkMap);
+                    GraphLink graphLink = new GraphLink(source, target);
+                    graphLink.setRelation(CiRelationConst.DEPLOY_ON);
+                    graphResult.getLinks().add(graphLink);
                 }
             }
             if (bizSystem.getOwnedRelationSet() != null) {
                 for (OwnedRelation relation : bizSystem.getOwnedRelationSet()) {
-                    Map<String, Object> person = ToyUtil.map("title", relation.getPerson().getName(), "label", CiLabelConstant.PERSON);
-                    person.put("image", "assets/img/person.svg");
-                    int source = nodes.indexOf(person);
+                    GraphNode node = new GraphNode(relation.getPerson());
+                    int source = graphResult.getNodes().indexOf(node);
                     if (source == -1) {
-                        nodes.add(person);
+                        graphResult.getNodes().add(node);
                         source = i++;
                     }
-                    Map<String, Object> linkMap = ToyUtil.map("source", source, "target", target);
-                    linkMap.put("relation", CiRelationConstant.OWNED);
-                    rels.add(linkMap);
+                    GraphLink graphLink = new GraphLink(source, target);
+                    graphLink.setRelation(CiRelationConst.OWNED);
+                    graphResult.getLinks().add(graphLink);
                 }
             }
         }
-        return ToyUtil.map("nodes", nodes, "links", rels);
+        //通用信息补充
+        CmdbUtil.patchGraph(graphResult);
+
+        return graphResult;
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> graph(Long id, int limit) {
+    public GraphResult graph(Long id, int limit) {
         Collection<BizSystemConfigItem> result;
         if (id == null) {
             result = bizSystemRepository.graph(limit);

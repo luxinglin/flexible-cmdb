@@ -1,6 +1,6 @@
 package cn.pioneer.dcim.cmdb.domain;
 
-import cn.pioneer.dcim.cmdb.common.constants.CiRelationConstant;
+import cn.pioneer.dcim.cmdb.common.constants.CiRelationConst;
 import cn.pioneer.dcim.cmdb.domain.relationship.OwnedRelation;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -44,7 +44,7 @@ public abstract class AbstractConfigItem {
     /**
      * 责任人关系
      */
-    @Relationship(type = CiRelationConstant.OWNED)
+    @Relationship(type = CiRelationConst.OWNED)
     private Set<OwnedRelation> ownedRelationSet = new HashSet<>();
     /**
      * 来源

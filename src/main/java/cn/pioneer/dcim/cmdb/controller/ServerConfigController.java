@@ -1,7 +1,7 @@
 package cn.pioneer.dcim.cmdb.controller;
 
 import cn.pioneer.dcim.cmdb.common.RestfulResult;
-import cn.pioneer.dcim.cmdb.common.util.PatchUpdateInfoUtil;
+import cn.pioneer.dcim.cmdb.common.util.CmdbUtil;
 import cn.pioneer.dcim.cmdb.domain.entity.ServerConfigItem;
 import cn.pioneer.dcim.cmdb.services.impl.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class ServerConfigController {
     public RestfulResult save(ServerConfigItem serverConfigItem,
                               HttpServletRequest request) {
         //构造更新信息
-        PatchUpdateInfoUtil.patch(serverConfigItem, request);
+        CmdbUtil.patchUpdateInfo(serverConfigItem, request);
         ServerConfigItem persist = serverService.save(serverConfigItem);
         return new RestfulResult(persist);
     }

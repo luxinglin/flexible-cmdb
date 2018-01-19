@@ -2,9 +2,11 @@ package cn.pioneer.dcim.cmdb.common.constants;
 
 /**
  * @author luxinglin
- * @since 2018-01-09
+ * @version 1.0
+ * @Description: CMDB配置项关系常量
+ * @create 2018-01-19 11:20
  */
-public interface CiRelationConstant {
+public interface CiRelationConst {
     String DEPEND_ON = "DEPEND_ON";
     String BELONG_TO = "BELONG_TO";
     String OWNED = "OWNED";

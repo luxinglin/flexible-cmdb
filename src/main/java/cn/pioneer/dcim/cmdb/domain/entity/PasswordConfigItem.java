@@ -1,6 +1,6 @@
 package cn.pioneer.dcim.cmdb.domain.entity;
 
-import cn.pioneer.dcim.cmdb.common.constants.CiRelationConstant;
+import cn.pioneer.dcim.cmdb.common.constants.CiRelationConst;
 import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
 import cn.pioneer.dcim.cmdb.domain.relationship.PasswordForRelation;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -33,7 +33,7 @@ public class PasswordConfigItem extends AbstractConfigItem {
     /**
      * 属于某一个配置项
      */
-    @Relationship(type = CiRelationConstant.PASSWORD_FOR)
+    @Relationship(type = CiRelationConst.PASSWORD_FOR)
     private Set<PasswordForRelation> passwordForRelations = new HashSet<>();
 
     @Transient
