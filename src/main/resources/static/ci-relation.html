@@ -106,7 +106,7 @@
                         var idx = 0;
                         data.data.forEach(function (item) {
                             if (idx == 0) {
-                                d3.json("/graph/" + val + "/" + item.value, function (error, result) {
+                                d3.json("/configItem/graph/" + val + "/" + item.value, function (error, result) {
                                     if (result.status) {
                                         drawGraph(error, result.data);
                                     } else {
@@ -162,7 +162,7 @@
         $("#ciSelect").on("change", function () {
             var ciType = $("#ciTypeSelect").val();
             var id = $("#ciSelect").val();
-            d3.json("/graph/" + ciType + "/" + id, function (error, result) {
+            d3.json("/configItem/graph/" + ciType + "/" + id, function (error, result) {
                 if (result.status) {
                     drawGraph(error, result.data);
                 } else {

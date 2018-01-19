@@ -1,12 +1,11 @@
 package cn.pioneer.dcim.cmdb.controller;
 
 import cn.pioneer.dcim.cmdb.common.RestfulResult;
+import cn.pioneer.dcim.cmdb.common.graph.GraphResult;
 import cn.pioneer.dcim.cmdb.services.ConfigItemService;
+import cn.pioneer.dcim.cmdb.services.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author luxinglin
@@ -37,5 +36,15 @@ public class ConfigItemController {
     @RequestMapping(value = "/{type}", method = RequestMethod.GET)
     public RestfulResult getDropdownList4Type(@PathVariable String type) {
         return new RestfulResult(configItemService.getDropdownList(type));
+    }
+
+    @Autowired
+    GraphService graphService;
+
+    @RequestMapping("/graph/{configType}/{id}")
+    public RestfulResult graph(@PathVariable String configType, @PathVariable Long id,
+                               @RequestParam(value = "limit", required = false) Integer limit) {
+        GraphResult graphResult = graphService.graph(configType, id, limit == null ? 100 : limit);
+        return new RestfulResult(graphResult);
     }
 }
