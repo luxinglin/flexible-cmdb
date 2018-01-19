@@ -2,8 +2,8 @@ package cn.pioneer.dcim.cmdb.common.util;
 
 import cn.pioneer.dcim.cmdb.common.emun.ConfigTypeEmun;
 import cn.pioneer.dcim.cmdb.common.graph.GraphResult;
-import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
-import cn.pioneer.dcim.cmdb.domain.entity.*;
+import cn.pioneer.dcim.cmdb.neo4j.domain.AbstractConfigItem;
+import cn.pioneer.dcim.cmdb.neo4j.domain.entity.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

@@ -1,6 +1,6 @@
 package cn.pioneer.dcim.cmdb.common.emun;
 
-import cn.pioneer.dcim.cmdb.domain.entity.*;
+import cn.pioneer.dcim.cmdb.neo4j.domain.entity.*;
 
 /**
  * @author luxinglin

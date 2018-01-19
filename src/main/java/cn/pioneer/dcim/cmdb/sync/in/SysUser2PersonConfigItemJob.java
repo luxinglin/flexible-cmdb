@@ -1,10 +1,10 @@
 package cn.pioneer.dcim.cmdb.sync.in;
 
 import cn.pioneer.dcim.cmdb.common.util.ZZBeanUtils;
-import cn.pioneer.dcim.cmdb.domain.entity.PersonConfigItem;
-import cn.pioneer.dcim.cmdb.mapper.SysUserMapper;
-import cn.pioneer.dcim.cmdb.model.SysUser;
-import cn.pioneer.dcim.cmdb.services.impl.PersonService;
+import cn.pioneer.dcim.cmdb.neo4j.domain.entity.PersonConfigItem;
+import cn.pioneer.dcim.cmdb.orm.mapper.SysUserMapper;
+import cn.pioneer.dcim.cmdb.orm.model.SysUser;
+import cn.pioneer.dcim.cmdb.services.impl.PersonServiceImpl;
 import cn.pioneer.dcim.cmdb.sync.common.CompareUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +26,16 @@ import java.util.List;
 public class SysUser2PersonConfigItemJob {
     protected static Logger logger = LoggerFactory.getLogger(SysUser2PersonConfigItemJob.class);
     @Autowired
-    PersonService personService;
+    PersonServiceImpl personService;
     @Autowired
     SysUserMapper sysUserMapper;
 
     /**
      * 周期性任务
      */
-    @Scheduled(cron = "*/30 * * * * ?")
+    @Scheduled(cron = "${sync.person.config.item.job.cron}")
     public void syncPersonConfigItem() {
+        logger.info("execute cron job with name " + SysUser2PersonConfigItemJob.class.getSimpleName());
         List<SysUser> sysUsers = sysUserMapper.selectByExample(null);
         List<PersonConfigItem> personConfigItems = personService.findList(null);
         //更新对象列表

@@ -2,9 +2,10 @@ package cn.pioneer.dcim.cmdb.controller;
 
 import cn.pioneer.dcim.cmdb.common.RestfulResult;
 import cn.pioneer.dcim.cmdb.common.util.CmdbUtil;
-import cn.pioneer.dcim.cmdb.domain.entity.BizSystemConfigItem;
-import cn.pioneer.dcim.cmdb.services.impl.BizSystemService;
+import cn.pioneer.dcim.cmdb.neo4j.domain.entity.BizSystemConfigItem;
+import cn.pioneer.dcim.cmdb.services.ConfigItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,7 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/bizSystems")
 public class BizSystemController {
     @Autowired
-    BizSystemService bizSystemService;
+    @Qualifier("bizSystemService")
+    ConfigItemService<BizSystemConfigItem> bizSystemService;
 
     /**
      * 新增业务系统

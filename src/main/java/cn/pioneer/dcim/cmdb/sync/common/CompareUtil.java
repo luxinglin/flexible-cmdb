@@ -1,7 +1,7 @@
 package cn.pioneer.dcim.cmdb.sync.common;
 
-import cn.pioneer.dcim.cmdb.domain.entity.PersonConfigItem;
-import cn.pioneer.dcim.cmdb.model.SysUser;
+import cn.pioneer.dcim.cmdb.neo4j.domain.entity.PersonConfigItem;
+import cn.pioneer.dcim.cmdb.orm.model.SysUser;
 
 /**
  * @author luxinglin

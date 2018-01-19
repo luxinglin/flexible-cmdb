@@ -1,6 +1,6 @@
 package cn.pioneer.dcim.cmdb.common.graph;
 
-import cn.pioneer.dcim.cmdb.domain.AbstractConfigItem;
+import cn.pioneer.dcim.cmdb.neo4j.domain.AbstractConfigItem;
 
 /**
  * @author luxinglin
