@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.pioneer.dcim.cmdb.mapper.SysUserMapper">
+    <resultMap id="BaseResultMap" type="cn.pioneer.dcim.cmdb.model.SysUser">
+        <id column="USER_SID" property="userSid" jdbcType="BIGINT"/>
+        <result column="USER_TYPE" property="userType" jdbcType="VARCHAR"/>
+        <result column="ACCOUNT" property="account" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="PASSWORD64" property="password64" jdbcType="VARCHAR"/>
+        <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
+        <result column="SEX" property="sex" jdbcType="INTEGER"/>
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
+        <result column="ORG_SID" property="orgSid" jdbcType="BIGINT"/>
+        <result column="DEP_NAME" property="depName" jdbcType="VARCHAR"/>
+        <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="VARCHAR"/>
+        <result column="BIZ_SID" property="bizSid" jdbcType="BIGINT"/>
+        <result column="PM_NAME" property="pmName" jdbcType="VARCHAR"/>
+        <result column="PM_TEL" property="pmTel" jdbcType="VARCHAR"/>
+        <result column="PM_EMAIL" property="pmEmail" jdbcType="VARCHAR"/>
+        <result column="TENANT_SID" property="tenantSid" jdbcType="BIGINT"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="ERROR_COUNT" property="errorCount" jdbcType="INTEGER"/>
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+        <result column="LAST_LOGIN_IP" property="lastLoginIp" jdbcType="VARCHAR"/>
+        <result column="SERVICE_LIMIT_QUANTITY" property="serviceLimitQuantity" jdbcType="INTEGER"/>
+        <result column="APPLY_REASON" property="applyReason" jdbcType="VARCHAR"/>
+        <result column="sms_max" property="smsMax" jdbcType="INTEGER"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="company_id" property="companyId" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    USER_SID, USER_TYPE, ACCOUNT, PASSWORD, PASSWORD64, REAL_NAME, SEX, EMAIL, MOBILE, 
+    ORG_SID, DEP_NAME, MGT_OBJ_SID, BIZ_SID, PM_NAME, PM_TEL, PM_EMAIL, TENANT_SID, STATUS, 
+    REMARK, ERROR_COUNT, LAST_LOGIN_TIME, LAST_LOGIN_IP, SERVICE_LIMIT_QUANTITY, APPLY_REASON, 
+    sms_max, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION, UUID, company_id
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.pioneer.dcim.cmdb.model.SysUserExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from sys_m_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_m_user
+        where USER_SID = #{userSid,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_m_user
+    where USER_SID = #{userSid,jdbcType=BIGINT}
+  </delete>
+    <delete id="deleteByExample" parameterType="cn.pioneer.dcim.cmdb.model.SysUserExample">
+        delete from sys_m_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="cn.pioneer.dcim.cmdb.model.SysUser">
+    insert into sys_m_user (USER_SID, USER_TYPE, ACCOUNT, 
+      PASSWORD, PASSWORD64, REAL_NAME, 
+      SEX, EMAIL, MOBILE, 
+      ORG_SID, DEP_NAME, MGT_OBJ_SID, 
+      BIZ_SID, PM_NAME, PM_TEL, 
+      PM_EMAIL, TENANT_SID, STATUS, 
+      REMARK, ERROR_COUNT, LAST_LOGIN_TIME, 
+      LAST_LOGIN_IP, SERVICE_LIMIT_QUANTITY, APPLY_REASON, 
+      sms_max, CREATED_BY, CREATED_DT, 
+      UPDATED_BY, UPDATED_DT, VERSION, 
+      UUID, company_id)
+    values (#{userSid,jdbcType=BIGINT}, #{userType,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{password64,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{orgSid,jdbcType=BIGINT}, #{depName,jdbcType=VARCHAR}, #{mgtObjSid,jdbcType=VARCHAR}, 
+      #{bizSid,jdbcType=BIGINT}, #{pmName,jdbcType=VARCHAR}, #{pmTel,jdbcType=VARCHAR}, 
+      #{pmEmail,jdbcType=VARCHAR}, #{tenantSid,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{errorCount,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
+      #{lastLoginIp,jdbcType=VARCHAR}, #{serviceLimitQuantity,jdbcType=INTEGER}, #{applyReason,jdbcType=VARCHAR}, 
+      #{smsMax,jdbcType=INTEGER}, #{createdBy,jdbcType=VARCHAR}, #{createdDt,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{updatedDt,jdbcType=TIMESTAMP}, #{version,jdbcType=BIGINT}, 
+      #{uuid,jdbcType=VARCHAR}, #{companyId,jdbcType=BIGINT})
+  </insert>
+    <insert id="insertSelective" parameterType="cn.pioneer.dcim.cmdb.model.SysUser">
+        insert into sys_m_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userSid != null">
+                USER_SID,
+            </if>
+            <if test="userType != null">
+                USER_TYPE,
+            </if>
+            <if test="account != null">
+                ACCOUNT,
+            </if>
+            <if test="password != null">
+                PASSWORD,
+            </if>
+            <if test="password64 != null">
+                PASSWORD64,
+            </if>
+            <if test="realName != null">
+                REAL_NAME,
+            </if>
+            <if test="sex != null">
+                SEX,
+            </if>
+            <if test="email != null">
+                EMAIL,
+            </if>
+            <if test="mobile != null">
+                MOBILE,
+            </if>
+            <if test="orgSid != null">
+                ORG_SID,
+            </if>
+            <if test="depName != null">
+                DEP_NAME,
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID,
+            </if>
+            <if test="bizSid != null">
+                BIZ_SID,
+            </if>
+            <if test="pmName != null">
+                PM_NAME,
+            </if>
+            <if test="pmTel != null">
+                PM_TEL,
+            </if>
+            <if test="pmEmail != null">
+                PM_EMAIL,
+            </if>
+            <if test="tenantSid != null">
+                TENANT_SID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="errorCount != null">
+                ERROR_COUNT,
+            </if>
+            <if test="lastLoginTime != null">
+                LAST_LOGIN_TIME,
+            </if>
+            <if test="lastLoginIp != null">
+                LAST_LOGIN_IP,
+            </if>
+            <if test="serviceLimitQuantity != null">
+                SERVICE_LIMIT_QUANTITY,
+            </if>
+            <if test="applyReason != null">
+                APPLY_REASON,
+            </if>
+            <if test="smsMax != null">
+                sms_max,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userSid != null">
+                #{userSid,jdbcType=BIGINT},
+            </if>
+            <if test="userType != null">
+                #{userType,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="password64 != null">
+                #{password64,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="orgSid != null">
+                #{orgSid,jdbcType=BIGINT},
+            </if>
+            <if test="depName != null">
+                #{depName,jdbcType=VARCHAR},
+            </if>
+            <if test="mgtObjSid != null">
+                #{mgtObjSid,jdbcType=VARCHAR},
+            </if>
+            <if test="bizSid != null">
+                #{bizSid,jdbcType=BIGINT},
+            </if>
+            <if test="pmName != null">
+                #{pmName,jdbcType=VARCHAR},
+            </if>
+            <if test="pmTel != null">
+                #{pmTel,jdbcType=VARCHAR},
+            </if>
+            <if test="pmEmail != null">
+                #{pmEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="tenantSid != null">
+                #{tenantSid,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="errorCount != null">
+                #{errorCount,jdbcType=INTEGER},
+            </if>
+            <if test="lastLoginTime != null">
+                #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastLoginIp != null">
+                #{lastLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceLimitQuantity != null">
+                #{serviceLimitQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="applyReason != null">
+                #{applyReason,jdbcType=VARCHAR},
+            </if>
+            <if test="smsMax != null">
+                #{smsMax,jdbcType=INTEGER},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="uuid != null">
+                #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="cn.pioneer.dcim.cmdb.model.SysUserExample"
+            resultType="java.lang.Integer">
+        select count(*) from sys_m_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update sys_m_user
+        <set>
+            <if test="record.userSid != null">
+                USER_SID = #{record.userSid,jdbcType=BIGINT},
+            </if>
+            <if test="record.userType != null">
+                USER_TYPE = #{record.userType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.account != null">
+                ACCOUNT = #{record.account,jdbcType=VARCHAR},
+            </if>
+            <if test="record.password != null">
+                PASSWORD = #{record.password,jdbcType=VARCHAR},
+            </if>
+            <if test="record.password64 != null">
+                PASSWORD64 = #{record.password64,jdbcType=VARCHAR},
+            </if>
+            <if test="record.realName != null">
+                REAL_NAME = #{record.realName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sex != null">
+                SEX = #{record.sex,jdbcType=INTEGER},
+            </if>
+            <if test="record.email != null">
+                EMAIL = #{record.email,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mobile != null">
+                MOBILE = #{record.mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orgSid != null">
+                ORG_SID = #{record.orgSid,jdbcType=BIGINT},
+            </if>
+            <if test="record.depName != null">
+                DEP_NAME = #{record.depName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mgtObjSid != null">
+                MGT_OBJ_SID = #{record.mgtObjSid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bizSid != null">
+                BIZ_SID = #{record.bizSid,jdbcType=BIGINT},
+            </if>
+            <if test="record.pmName != null">
+                PM_NAME = #{record.pmName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.pmTel != null">
+                PM_TEL = #{record.pmTel,jdbcType=VARCHAR},
+            </if>
+            <if test="record.pmEmail != null">
+                PM_EMAIL = #{record.pmEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tenantSid != null">
+                TENANT_SID = #{record.tenantSid,jdbcType=BIGINT},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status,jdbcType=VARCHAR},
+            </if>
+            <if test="record.remark != null">
+                REMARK = #{record.remark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.errorCount != null">
+                ERROR_COUNT = #{record.errorCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.lastLoginTime != null">
+                LAST_LOGIN_TIME = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.lastLoginIp != null">
+                LAST_LOGIN_IP = #{record.lastLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="record.serviceLimitQuantity != null">
+                SERVICE_LIMIT_QUANTITY = #{record.serviceLimitQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="record.applyReason != null">
+                APPLY_REASON = #{record.applyReason,jdbcType=VARCHAR},
+            </if>
+            <if test="record.smsMax != null">
+                sms_max = #{record.smsMax,jdbcType=INTEGER},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version,jdbcType=BIGINT},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.companyId != null">
+                company_id = #{record.companyId,jdbcType=BIGINT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update sys_m_user
+        set USER_SID = #{record.userSid,jdbcType=BIGINT},
+        USER_TYPE = #{record.userType,jdbcType=VARCHAR},
+        ACCOUNT = #{record.account,jdbcType=VARCHAR},
+        PASSWORD = #{record.password,jdbcType=VARCHAR},
+        PASSWORD64 = #{record.password64,jdbcType=VARCHAR},
+        REAL_NAME = #{record.realName,jdbcType=VARCHAR},
+        SEX = #{record.sex,jdbcType=INTEGER},
+        EMAIL = #{record.email,jdbcType=VARCHAR},
+        MOBILE = #{record.mobile,jdbcType=VARCHAR},
+        ORG_SID = #{record.orgSid,jdbcType=BIGINT},
+        DEP_NAME = #{record.depName,jdbcType=VARCHAR},
+        MGT_OBJ_SID = #{record.mgtObjSid,jdbcType=VARCHAR},
+        BIZ_SID = #{record.bizSid,jdbcType=BIGINT},
+        PM_NAME = #{record.pmName,jdbcType=VARCHAR},
+        PM_TEL = #{record.pmTel,jdbcType=VARCHAR},
+        PM_EMAIL = #{record.pmEmail,jdbcType=VARCHAR},
+        TENANT_SID = #{record.tenantSid,jdbcType=BIGINT},
+        STATUS = #{record.status,jdbcType=VARCHAR},
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+        ERROR_COUNT = #{record.errorCount,jdbcType=INTEGER},
+        LAST_LOGIN_TIME = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+        LAST_LOGIN_IP = #{record.lastLoginIp,jdbcType=VARCHAR},
+        SERVICE_LIMIT_QUANTITY = #{record.serviceLimitQuantity,jdbcType=INTEGER},
+        APPLY_REASON = #{record.applyReason,jdbcType=VARCHAR},
+        sms_max = #{record.smsMax,jdbcType=INTEGER},
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+        CREATED_DT = #{record.createdDt,jdbcType=TIMESTAMP},
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+        UPDATED_DT = #{record.updatedDt,jdbcType=TIMESTAMP},
+        VERSION = #{record.version,jdbcType=BIGINT},
+        UUID = #{record.uuid,jdbcType=VARCHAR},
+        company_id = #{record.companyId,jdbcType=BIGINT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.pioneer.dcim.cmdb.model.SysUser">
+        update sys_m_user
+        <set>
+            <if test="userType != null">
+                USER_TYPE = #{userType,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                ACCOUNT = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="password64 != null">
+                PASSWORD64 = #{password64,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                REAL_NAME = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                SEX = #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="email != null">
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                MOBILE = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="orgSid != null">
+                ORG_SID = #{orgSid,jdbcType=BIGINT},
+            </if>
+            <if test="depName != null">
+                DEP_NAME = #{depName,jdbcType=VARCHAR},
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID = #{mgtObjSid,jdbcType=VARCHAR},
+            </if>
+            <if test="bizSid != null">
+                BIZ_SID = #{bizSid,jdbcType=BIGINT},
+            </if>
+            <if test="pmName != null">
+                PM_NAME = #{pmName,jdbcType=VARCHAR},
+            </if>
+            <if test="pmTel != null">
+                PM_TEL = #{pmTel,jdbcType=VARCHAR},
+            </if>
+            <if test="pmEmail != null">
+                PM_EMAIL = #{pmEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="tenantSid != null">
+                TENANT_SID = #{tenantSid,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="errorCount != null">
+                ERROR_COUNT = #{errorCount,jdbcType=INTEGER},
+            </if>
+            <if test="lastLoginTime != null">
+                LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastLoginIp != null">
+                LAST_LOGIN_IP = #{lastLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceLimitQuantity != null">
+                SERVICE_LIMIT_QUANTITY = #{serviceLimitQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="applyReason != null">
+                APPLY_REASON = #{applyReason,jdbcType=VARCHAR},
+            </if>
+            <if test="smsMax != null">
+                sms_max = #{smsMax,jdbcType=INTEGER},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                VERSION = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where USER_SID = #{userSid,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.pioneer.dcim.cmdb.model.SysUser">
+    update sys_m_user
+    set USER_TYPE = #{userType,jdbcType=VARCHAR},
+      ACCOUNT = #{account,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      PASSWORD64 = #{password64,jdbcType=VARCHAR},
+      REAL_NAME = #{realName,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=INTEGER},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      ORG_SID = #{orgSid,jdbcType=BIGINT},
+      DEP_NAME = #{depName,jdbcType=VARCHAR},
+      MGT_OBJ_SID = #{mgtObjSid,jdbcType=VARCHAR},
+      BIZ_SID = #{bizSid,jdbcType=BIGINT},
+      PM_NAME = #{pmName,jdbcType=VARCHAR},
+      PM_TEL = #{pmTel,jdbcType=VARCHAR},
+      PM_EMAIL = #{pmEmail,jdbcType=VARCHAR},
+      TENANT_SID = #{tenantSid,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      ERROR_COUNT = #{errorCount,jdbcType=INTEGER},
+      LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+      LAST_LOGIN_IP = #{lastLoginIp,jdbcType=VARCHAR},
+      SERVICE_LIMIT_QUANTITY = #{serviceLimitQuantity,jdbcType=INTEGER},
+      APPLY_REASON = #{applyReason,jdbcType=VARCHAR},
+      sms_max = #{smsMax,jdbcType=INTEGER},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
+      VERSION = #{version,jdbcType=BIGINT},
+      UUID = #{uuid,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=BIGINT}
+    where USER_SID = #{userSid,jdbcType=BIGINT}
+  </update>
+</mapper>
