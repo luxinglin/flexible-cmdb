@@ -60,6 +60,33 @@ public class CommConfigItemServiceImpl implements CommConfigItemService {
     }
 
     @Override
+    public AbstractConfigItem getConfigItem(String type, Long id) {
+        if (ConfigTypeEmun.BIZSYSTEM.getCode().equals(type)) {
+            return bizSystemService.findOne(id);
+        }
+        if (ConfigTypeEmun.SERVER.getCode().equals(type)) {
+            return serverService.findOne(id);
+        }
+        if (ConfigTypeEmun.PASSWORD.getCode().equals(type)) {
+            return passwordService.findOne(id);
+        }
+        if (ConfigTypeEmun.NETWORK.getCode().equals(type)) {
+            return networkService.findOne(id);
+        }
+        if (ConfigTypeEmun.STORAGE.getCode().equals(type)) {
+            return storageService.findOne(id);
+        }
+        if (ConfigTypeEmun.MIDDLEWARE.getCode().equals(type)) {
+            return middlewareService.findOne(id);
+        }
+        if (ConfigTypeEmun.PERSON.getCode().equals(type)) {
+            return personService.findOne(id);
+        }
+
+        return null;
+    }
+
+    @Override
     public List<Map<String, Object>> getDropdownList(String type) {
         List<AbstractConfigItem> list = configItemDao.getDropdownList(type);
         if (list == null || list.size() == 0) {

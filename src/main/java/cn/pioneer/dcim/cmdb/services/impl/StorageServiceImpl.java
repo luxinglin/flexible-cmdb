@@ -68,7 +68,7 @@ public class StorageServiceImpl implements ConfigItemService<StorageConfigItem> 
 
     @Override
     public StorageConfigItem findOne(Long id) {
-        return null;
+        return storageRepository.findOne(id);
     }
 
     @Override

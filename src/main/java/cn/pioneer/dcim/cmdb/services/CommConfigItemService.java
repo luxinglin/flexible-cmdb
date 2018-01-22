@@ -1,6 +1,7 @@
 package cn.pioneer.dcim.cmdb.services;
 
 import cn.pioneer.dcim.cmdb.common.graph.GraphResult;
+import cn.pioneer.dcim.cmdb.neo4j.domain.AbstractConfigItem;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,15 @@ public interface CommConfigItemService {
      * @return
      */
     List<Map<String, Object>> getConfigItemTypes();
+
+    /**
+     * 获取配置项
+     *
+     * @param type
+     * @param id
+     * @return
+     */
+    AbstractConfigItem getConfigItem(String type, Long id);
 
     /**
      * 获取配置项图形数据

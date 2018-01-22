@@ -67,7 +67,7 @@ public class NetworkServiceImpl implements ConfigItemService<NetworkConfigItem> 
 
     @Override
     public NetworkConfigItem findOne(Long id) {
-        return null;
+        return networkRepository.findOne(id);
     }
 
     @Override

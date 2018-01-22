@@ -118,6 +118,8 @@ public class ServerConfigItem extends AbstractConfigItem implements Networkable 
     private String storageIdStr;
     @Transient
     private String bizSystemIdStr;
+    @Transient
+    private Long belongPhysicalServerId;
 
     public String getUuid() {
         return uuid;

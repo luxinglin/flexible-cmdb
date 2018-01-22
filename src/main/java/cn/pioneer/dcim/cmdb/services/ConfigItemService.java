@@ -23,6 +23,7 @@ public interface ConfigItemService<T> {
     T save(T item);
 
     /**
+     *
      * 批量保存对象到neo4j数据库
      *
      * @param items

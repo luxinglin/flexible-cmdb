@@ -61,6 +61,11 @@ public class PasswordConfigItem extends AbstractConfigItem {
     @Transient
     private String storageIdStr;
 
+    @Transient
+    private String configItemType;
+    @Transient
+    private Long configItemId;
+
     public String getUserName() {
         return userName;
     }
@@ -131,5 +136,21 @@ public class PasswordConfigItem extends AbstractConfigItem {
 
     public void setStorageIdStr(String storageIdStr) {
         this.storageIdStr = storageIdStr;
+    }
+
+    public String getConfigItemType() {
+        return configItemType;
+    }
+
+    public void setConfigItemType(String configItemType) {
+        this.configItemType = configItemType;
+    }
+
+    public Long getConfigItemId() {
+        return configItemId;
+    }
+
+    public void setConfigItemId(Long configItemId) {
+        this.configItemId = configItemId;
     }
 }

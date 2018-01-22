@@ -95,7 +95,7 @@
                     <div class="form-group">
                         <label class="col-sm-3"></label>
                         <div class="col-sm-8 pull-right">
-                            <button class="btn btn-default" type="button" id="addBizSystemConfigItemBtn">Add</button>
+                            <button class="btn btn-default" type="button" id="addBizSystemConfigItemBtn">保存</button>
                         </div>
                     </div>
 
@@ -129,10 +129,10 @@
                         </div>
                         <label for="serverTypeForInsert" class="col-sm-2 control-label">服务器类型：</label>
                         <div class="col-sm-4">
-                            <select type="text" class="form-control" name="serverType" id="serverTypeForInsert"
+                            <select type="text" class="form-control" name="serverType" onchange="setVmPhServerDisplay()"
+                                    id="serverTypeForInsert"
                                     placeholder="UUID">
-                                <option value="">-请选择-</option>
-                                <option value="1">物理机</option>
+                                <option value="1" selected>物理机</option>
                                 <option value="2">虚拟机</option>
                             </select>
                         </div>
@@ -167,11 +167,22 @@
                             <input type="text" class="form-control" name="runStatus" id="server_runStatusForInsert"
                                    placeholder="运行状态">
                         </div>
-                        <label for="server_locationDescForInsert" class="col-sm-2 control-label">所在位置：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" name="locationDesc"
-                                   id="server_locationDescForInsert"
-                                   placeholder="所在位置">
+                        <div id="phServerDiv">
+                            <label for="server_locationDescForInsert" class="col-sm-2 control-label">所在位置：</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="locationDesc"
+                                       id="server_locationDescForInsert"
+                                       placeholder="所在位置">
+                            </div>
+                        </div>
+                        <div id="vmServerDiv" style="display: none">
+                            <label for="server_belongPhysicalServerIdForInsert"
+                                   class="col-sm-2 control-label">所在物理机：</label>
+                            <div class="col-sm-4">
+                                <select type="text" class="form-control" name="belongPhysicalServerId"
+                                        id="server_belongPhysicalServerIdForInsert"
+                                        placeholder="所在物理机"></select>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -248,7 +259,7 @@
                     <div class="form-group">
                         <label class="col-sm-3"></label>
                         <div class="col-sm-8 pull-right">
-                            <button class="btn btn-default" type="button" id="addServerConfigItemBtn">Add</button>
+                            <button class="btn btn-default" type="button" id="addServerConfigItemBtn">保存</button>
                         </div>
                     </div>
                 </form>
@@ -262,11 +273,30 @@
             <div class="row">
                 <form id="newPasswordConfigItemForm" class="form-horizontal addlabel">
                     <div class="form-group">
-                        <label for="password.nameForInsert" class="col-sm-3 control-label">密码名称：</label>
+                        <label for="password_configItemTypeForInsert" class="col-sm-3 control-label">配置项类型：</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="name" id="password.nameForInsert"
-                                   placeholder="密码名称"
-                                   required>
+                            <select type="text" class="form-control" name="configItemType"
+                                    id="password_configItemTypeForInsert" onchange="filterPasswordConfigItemSelect()"
+                                    placeholder="配置项类型"
+                                    required>
+                                <option value="">-请选择-</option>
+                                <option value="BizSystemConfigItem">业务系统</option>
+                                <option value="ServerConfigItem">服务器</option>
+                                <option value="StorageConfigItem">存储设备</option>
+                                <option value="NetworkConfigItem">网络设备</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="password_configItemIdForInsert" class="col-sm-3 control-label">配置项：</label>
+                        <div class="col-sm-8">
+                            <select type="text" class="form-control" name="configItemId"
+                                    id="password_configItemIdForInsert"
+                                    placeholder="配置项"
+                                    required>
+
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -287,28 +317,15 @@
                     <div class="form-group">
                         <label for="remarkForInsert" class="col-sm-3 control-label">备注：</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="remark" id="remarkForInsert"
-                                   placeholder="备注">
+                            <textarea type="text" class="form-control" name="remark" id="remarkForInsert"
+                                      placeholder="备注" rows="3"></textarea>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="bizSystemIdStrForInsert" class="col-sm-3 control-label">所属系统：</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" name="bizSystemIdStr" multiple id="bizSystemIdStrForInsert"
-                                    placeholder="所属系统"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="serverIdStrForInsert" class="col-sm-3 control-label">所属服务器：</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" name="serverIdStr" multiple id="serverIdStrForInsert"
-                                    placeholder="所属服务器"></select>
-                        </div>
-                    </div>
+
                     <div class="form-group">
                         <label class="col-sm-3"></label>
                         <div class="col-sm-8 pull-right">
-                            <button class="btn btn-default" type="button" id="addPasswordConfigItemBtn">Add</button>
+                            <button class="btn btn-default" type="button" id="addPasswordConfigItemBtn">保存</button>
                         </div>
                     </div>
                 </form>
@@ -322,39 +339,109 @@
             <div class="row">
                 <form id="newNetworkConfigItemForm" class="form-horizontal addlabel">
                     <div class="form-group">
-                        <label for="network.nameForInsert" class="col-sm-3 control-label">设备名称：</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" name="name" id="network.nameForInsert"
+                        <label for="network_nameForInsert" class="col-sm-2 control-label">设备名称：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="name" id="network_nameForInsert"
                                    placeholder="设备名称"
                                    required>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="network.snNameForInsert" class="col-sm-3 control-label">序列号：</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" name="sn" id="network.snNameForInsert"
+                        <label for="network_snForInsert" class="col-sm-2 control-label">序列号：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="sn" id="network_snForInsert"
                                    placeholder="序列号"
                                    required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="networkTypeForInsert" class="col-sm-3 control-label">设备类型：</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" name="networkType" id="networkTypeForInsert"
-                                   placeholder="设备类型">
+                        <label for="network_networkTypeForInsert" class="col-sm-2 control-label">设备类型：</label>
+                        <div class="col-sm-4">
+                            <select type="text" class="form-control" name="networkType"
+                                    id="network_networkTypeForInsert"
+                                    placeholder="设备类型">
+                                <option value="">-请选择-</option>
+                                <option value="1">交换机</option>
+                                <option value="2">路由器</option>
+                            </select>
+                        </div>
+                        <label for="network_manageIpForInsert" class="col-sm-2 control-label">管理IP：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="manageIp" id="network_manageIpForInsert"
+                                   placeholder="管理IP">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="network.runStatusForInsert" class="col-sm-3 control-label">运行状态：</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" name="runStatus" id="network.runStatusForInsert"
+                        <label for="network_brandForInsert" class="col-sm-2 control-label">品牌：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="brand" id="network_brandForInsert"
+                                   placeholder="品牌"
+                                   required>
+                        </div>
+                        <label for="network_modelForInsert" class="col-sm-2 control-label">型号：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="model" id="network_modelForInsert"
+                                   placeholder="型号"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="network_ownerIdStrForInsert" class="col-sm-2 control-label">责任人：</label>
+                        <div class="col-sm-4">
+                            <select type="text" class="form-control" name="ownerIdStr" id="network_ownerIdStrForInsert"
+                                    placeholder="责任人"></select>
+                        </div>
+                        <label for="network_runStatusForInsert" class="col-sm-2 control-label">运行状态：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="runStatus" id="network_runStatusForInsert"
                                    placeholder="运行状态">
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="network_portNumForInsert" class="col-sm-2 control-label">端口数：</label>
+                        <div class="col-sm-4">
+                            <input type="number" class="form-control" min="1" name="portNum"
+                                   id="network_portNumForInsert"
+                                   placeholder="端口数">
+                        </div>
+                        <label for="network_transmissionSpeedForInsert" class="col-sm-2 control-label">传输速率：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="transmissionSpeed"
+                                   id="network_transmissionSpeedForInsert"
+                                   placeholder="传输速率">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="network_transmissionModeForInsert" class="col-sm-2 control-label">传输模式：</label>
+                        <div class="col-sm-4">
+                            <select type="text" class="form-control" name="transmissionMode"
+                                    id="network_transmissionModeForInsert"
+                                    placeholder="传输模式">
+                                <option value="">-请选择-</option>
+                                <option value="1">全双工</option>
+                                <option value="2">半双工</option>
+                                <option value="3">全/半双工自适应</option>
+                            </select>
+                        </div>
+                        <label for="network_locationDescForInsert" class="col-sm-2 control-label">所在位置：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="locationDesc"
+                                   id="network_locationDescForInsert"
+                                   placeholder="所在位置">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="network_usePurposeForInsert" class="col-sm-2 control-label">用途：</label>
+                        <div class="col-sm-4">
+                            <textarea type="text" rows="3" class="form-control" name="usePurpose"
+                                      id="network_usePurposeForInsert"
+                                      placeholder="用途"></textarea>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="col-sm-3"></label>
                         <div class="col-sm-8 pull-right">
-                            <button class="btn btn-default" type="button" id="addNetworkConfigItemBtn">Add</button>
+                            <button class="btn btn-default" type="button" id="addNetworkConfigItemBtn">保存</button>
                         </div>
                     </div>
                 </form>
@@ -368,39 +455,99 @@
             <div class="row">
                 <form id="newStorageConfigItemForm" class="form-horizontal addlabel">
                     <div class="form-group">
-                        <label for="storage.nameForInsert" class="col-sm-3 control-label">存储名称：</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" name="name" id="storage.nameForInsert"
+                        <label for="storage_nameForInsert" class="col-sm-2 control-label">存储名称：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="name" id="storage_nameForInsert"
                                    placeholder="存储名称"
                                    required>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="storage.brandForInsert" class="col-sm-3 control-label">品牌：</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" name="brand" id="storage.brandForInsert"
-                                   placeholder="品牌"
+                        <label for="storage_aliasNameForInsert" class="col-sm-2 control-label">存储别名：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="aliasName" id="storage_aliasNameForInsert"
+                                   placeholder="存储别名"
                                    required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="storage.runStatusForInsert" class="col-sm-3 control-label">运行状态：</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" name="runStatus" id="storage.runStatusForInsert"
-                                   placeholder="运行状态">
+                        <label for="storage_snForInsert" class="col-sm-2 control-label">序列号：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="sn" id="storage_snForInsert"
+                                   placeholder="序列号"
+                                   required>
+                        </div>
+                        <label for="storage_ownerIdStrForInsert" class="col-sm-2 control-label">责任人：</label>
+                        <div class="col-sm-4">
+                            <select type="text" class="form-control" name="ownerIdStr" id="storage_ownerIdStrForInsert"
+                                    placeholder="责任人"
+                                    required></select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="storage.usePurposeForInsert" class="col-sm-3 control-label">用途：</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" name="usePurpose" id="storage.usePurposeForInsert"
-                                   placeholder="用途">
+                        <label for="storage_brandForInsert" class="col-sm-2 control-label">品牌：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="brand" id="storage_brandForInsert"
+                                   placeholder="品牌"
+                                   required>
+                        </div>
+                        <label for="storage_modelForInsert" class="col-sm-2 control-label">型号：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="model" id="storage_modelForInsert"
+                                   placeholder="型号"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="storage_runStatusForInsert" class="col-sm-2 control-label">运行状态：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="runStatus" id="storage_runStatusForInsert"
+                                   placeholder="运行状态">
+                        </div>
+                        <label for="storage_locationDescForInsert" class="col-sm-2 control-label">所在位置：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="locationDesc"
+                                   id="storage_locationDescForInsert"
+                                   placeholder="所在位置">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="storage_transmissionSpeedForInsert" class="col-sm-2 control-label">传输速率：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="transmissionSpeed"
+                                   id="storage_transmissionSpeedForInsert"
+                                   placeholder="传输速率">
+                        </div>
+                        <label for="storage_raidSupportForInsert" class="col-sm-2 control-label">RAID支持：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="raidSupport" id="storage_raidSupportForInsert"
+                                   placeholder="RAID支持">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="storage_totalVolumeForInsert" class="col-sm-2 control-label">容量(GB)：</label>
+                        <div class="col-sm-4">
+                            <input type="number" min="1" class="form-control" name="totalVolume"
+                                   id="storage_totalVolumeForInsert"
+                                   placeholder="容量(GB)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="storage_otherParamForInsert" class="col-sm-2 control-label">其他参数：</label>
+                        <div class="col-sm-4">
+                            <textarea type="text" class="form-control" rows="3" name="otherParam"
+                                      id="storage_otherParamForInsert"
+                                      placeholder="其他参数"></textarea>
+                        </div>
+                        <label for="storage_usePurposeForInsert" class="col-sm-2 control-label">用途：</label>
+                        <div class="col-sm-4">
+                            <textarea type="text" class="form-control" name="usePurpose"
+                                      id="storage_usePurposeForInsert"
+                                      placeholder="用途" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3"></label>
                         <div class="col-sm-8 pull-right">
-                            <button class="btn btn-default" type="button" id="addStorageConfigItemBtn">Add</button>
+                            <button class="btn btn-default" type="button" id="addStorageConfigItemBtn">保存</button>
                         </div>
                     </div>
                 </form>
@@ -414,21 +561,26 @@
             <div class="row">
                 <form id="newMiddlewareConfigItemForm" class="form-horizontal addlabel">
                     <div class="form-group">
-                        <label for="middleware.nameForInsert" class="col-sm-2 control-label">中间件名称：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" name="name" id="middleware.nameForInsert"
-                                   placeholder="中间件名称"
-                                   required>
-                        </div>
-                        <label for="middlewareTypeForInsert" class="col-sm-2 control-label">类型：</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" name="middlewareType" id="middlewareTypeForInsert"
-                                   placeholder="类型"
-                                   required>
+                        <label for="middlewareTypeForInsert" class="col-sm-3 control-label">中间件类型：</label>
+                        <div class="col-sm-8">
+                            <select type="text" class="form-control" name="middlewareType" id="middlewareTypeForInsert"
+                                    placeholder="中间件类型"
+                                    required>
+                                <option value="">-请选择-</option>
+                                <option value="1">消息中间件</option>
+                                <option value="2">数据库</option>
+                                <option value="3">Web服务器</option>
+                                <option value="4">其他</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
-
+                        <label for="middleware_nameForInsert" class="col-sm-3 control-label">中间件名称：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="name" id="middleware_nameForInsert"
+                                   placeholder="中间件名称"
+                                   required>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="middleware_serverIdStrForInsert" class="col-sm-3 control-label">部署服务器：</label>
@@ -439,11 +591,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="middleware.usePurposeForInsert" class="col-sm-3 control-label">用途：</label>
+                        <label for="middleware_usePurposeForInsert" class="col-sm-3 control-label">用途：</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="usePurpose"
-                                   id="middleware.usePurposeForInsert"
-                                   placeholder="用途">
+                            <textarea type="text" class="form-control" name="usePurpose"
+                                      id="middleware_usePurposeForInsert"
+                                      placeholder="用途" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
@@ -470,13 +622,13 @@
                     <div class="form-group">
                         <label class="col-sm-3"></label>
                         <div class="col-sm-8 pull-right">
-                            <button class="btn btn-default" type="button" id="addMiddlewareConfigItemBtn">Add</button>
+                            <button class="btn btn-default" type="button" id="addMiddlewareConfigItemBtn">保存</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-        <!--新增密码信息 END-->
+        <!--新增中间件信息 END-->
     </div>
 </div>
 
@@ -514,7 +666,6 @@
         } else if (val === 'PasswordConfigItem') {
             url = "/passwords/?name=";
             $(" <tr>\n" +
-                "                    <th>密码名称</th>\n" +
                 "                    <th>用户名</th>\n" +
                 "                    <th>密码</th>\n" +
                 "                    <th>备注</th>\n" +
@@ -535,6 +686,7 @@
         } else if (val === 'PersonConfigItem') {
             url = "/persons/?name=";
             $(" <tr>\n" +
+                "                    <th>账号</th>\n" +
                 "                    <th>姓名</th>\n" +
                 "                    <th>电话</th>\n" +
                 "                    <th>邮箱</th>\n" +
@@ -582,19 +734,19 @@
                 if (data.length < 1) return;
                 data.forEach(function (item) {
                     if (val === "BizSystemConfigItem") {
-                        $("<tr><td class='movie'>" + item.name + "</td><td>" + item.code + "</td><td>" + item.bizSystemDesc + "</td><td>" + 0 + "</td><td>" + item.serverSet.length + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
+                        $("<tr><td>" + item.name + "</td><td>" + item.code + "</td><td>" + item.bizSystemDesc + "</td><td>" + 0 + "</td><td>" + item.serverSet.length + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
                     } else if (val === "PasswordConfigItem") {
-                        $("<tr><td class='movie'>" + item.name + "</td><td>" + item.userName + "</td><td>" + item.password + "</td><td>" + item.remark + "</td><td>" + item.passwordForRelations.length + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
+                        $("<tr><td>" + item.userName + "</td><td>" + item.password + "</td><td>" + item.remark + "</td><td>" + item.passwordForRelations.length + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
                     } else if (val === "ServerConfigItem") {
-                        $("<tr><td class='movie'>" + item.name + "</td><td>" + item.sn + "</td><td>" + item.ownerName + "</td><td>" + item.manageIp + "</td><td>" + item.runStatus + "</td><td>" + item.locationDesc + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
+                        $("<tr><td>" + item.name + "</td><td>" + item.sn + "</td><td>" + item.ownerName + "</td><td>" + item.manageIp + "</td><td>" + item.runStatus + "</td><td>" + item.locationDesc + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
                     } else if (val === "PersonConfigItem") {
-                        $("<tr><td class='movie'>" + item.name + "</td><td>" + item.mobile + "</td><td>" + item.email + "</td>").appendTo(t);
+                        $("<tr><td>" + item.account + "</td><td>" + item.name + "</td><td>" + item.mobile + "</td><td>" + item.email + "</td>").appendTo(t);
                     } else if (val === "NetworkConfigItem") {
-                        $("<tr><td class='movie'>" + item.name + "</td><td>" + item.sn + "</td><td>" + item.networkType + "</td><td>" + item.manageIp + "</td><td>" + item.ownerName + "</td><td>" + item.runStatus + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
+                        $("<tr><td>" + item.name + "</td><td>" + item.sn + "</td><td>" + item.networkType + "</td><td>" + item.manageIp + "</td><td>" + item.ownerName + "</td><td>" + item.runStatus + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
                     } else if (val === "StorageConfigItem") {
-                        $("<tr><td class='movie'>" + item.name + "</td><td>" + item.sn + "</td><td>" + item.ownerName + "</td><td>" + item.runStatus + "</td><td>" + item.totalVolume + "</td><td>" + item.transmissionSpeed + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
+                        $("<tr><td>" + item.name + "</td><td>" + item.sn + "</td><td>" + item.ownerName + "</td><td>" + item.runStatus + "</td><td>" + item.totalVolume + "</td><td>" + item.transmissionSpeed + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
                     } else if (val === "MiddlewareConfigItem") {
-                        $("<tr><td class='movie'>" + item.name + "</td><td>" + item.middlewareType + "</td><td>" + item.configFilePath + "</td><td>" + item.logFilePath + "</td><td>" + item.configParamDesc + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
+                        $("<tr><td>" + item.name + "</td><td>" + item.middlewareType + "</td><td>" + item.configFilePath + "</td><td>" + item.logFilePath + "</td><td>" + item.configParamDesc + "</td><td><a href='#' onclick='deleteItem(" + item.id + ")'>删除</a></td></tr>").appendTo(t);
                     }
                 });
             }, "json");
@@ -646,9 +798,10 @@
          * 新增密码信息
          * */
         $("#addPasswordConfigItemBtn").on("click", function () {
+            var typeName = $("#password_configItemIdForInsert").find("option:selected").text();
             $.ajax({
                 url: "/passwords",
-                data: $("#newPasswordConfigItemForm").serialize(),
+                data: $("#newPasswordConfigItemForm").serialize() + "&name=" + typeName + "账号",
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {
@@ -758,11 +911,15 @@
                 $("#bizContactIdStrForInsert").empty();
                 $("#bizRelationIdStrForInsert").empty();
                 $("#server_ownerIdStrForInsert").empty();
+                $("#storage_ownerIdStrForInsert").empty();
+                $("#network_ownerIdStrForInsert").empty();
                 if (data.status) {
                     data.data.forEach(function (item) {
                         $("#bizContactIdStrForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
                         $("#bizRelationIdStrForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
                         $("#server_ownerIdStrForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                        $("#storage_ownerIdStrForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                        $("#network_ownerIdStrForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
                     });
                 }
             }
@@ -837,10 +994,43 @@
                 }
             }
         });
-
-
-
     });
+
+    function filterPasswordConfigItemSelect() {
+        $("#password_configItemIdForInsert").empty();
+        var val = $("#password_configItemTypeForInsert").val();
+        if (val !== '') {
+            $.ajax({
+                url: "/configItem/" + val,
+                type: "GET",
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status) {
+                        data.data.forEach(function (item) {
+                            $("#password_configItemIdForInsert").append("<option value='" + item.value + "'>" + item.name + "</option>");
+                        });
+                        $("#password_configItemIdForInsert").prepend("<option value='' selected>--请选择--</option>");
+                    }
+                },
+                error: function (er) {
+                    console.log(er)
+                }
+            });
+        } else {
+            $("#password_configItemIdForInsert").append("<option value=''>-请选择-</option>");
+        }
+    }
+
+    function setVmPhServerDisplay() {
+        //虚机
+        if ($("#serverTypeForInsert").val() == 2) {
+            $("#phServerDiv").css("display", "none");
+            $("#vmServerDiv").css("display", "block");
+        } else {//其他情况
+            $("#phServerDiv").css("display", "block");
+            $("#vmServerDiv").css("display", "none");
+        }
+    }
 
     function refreshCiSelect(val) {
         if (val != "") {

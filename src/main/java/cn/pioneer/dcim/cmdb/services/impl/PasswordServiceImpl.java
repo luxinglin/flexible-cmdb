@@ -1,14 +1,12 @@
 package cn.pioneer.dcim.cmdb.services.impl;
 
-import cn.pioneer.dcim.cmdb.common.constants.CommConst;
 import cn.pioneer.dcim.cmdb.common.graph.GraphResult;
 import cn.pioneer.dcim.cmdb.common.util.ToyUtil;
 import cn.pioneer.dcim.cmdb.neo4j.domain.AbstractConfigItem;
-import cn.pioneer.dcim.cmdb.neo4j.domain.entity.BizSystemConfigItem;
 import cn.pioneer.dcim.cmdb.neo4j.domain.entity.PasswordConfigItem;
-import cn.pioneer.dcim.cmdb.neo4j.domain.entity.ServerConfigItem;
 import cn.pioneer.dcim.cmdb.neo4j.domain.relationship.PasswordForRelation;
 import cn.pioneer.dcim.cmdb.neo4j.repositories.PasswordRepository;
+import cn.pioneer.dcim.cmdb.services.CommConfigItemService;
 import cn.pioneer.dcim.cmdb.services.ConfigItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,36 +32,20 @@ public class PasswordServiceImpl implements ConfigItemService<PasswordConfigItem
     ServerServiceImpl serverService;
     @Autowired
     BizSystemServiceImpl bizSystemService;
+    @Autowired
+    CommConfigItemService commConfigItemService;
 
     @Override
     public PasswordConfigItem save(PasswordConfigItem item) {
         List<AbstractConfigItem> list = new ArrayList<>(8);
-        if (ToyUtil.isNotEmpty(item.getServerIdStr())) {
-            String[] servers = item.getServerIdStr().split(CommConst.COMMA);
-            for (int i = 0; i < servers.length; i++) {
-                ServerConfigItem serverConfigItem = serverService.findOne(Long.valueOf(servers[i]));
-                if (serverConfigItem != null) {
-                    list.add(serverConfigItem);
-                }
-            }
-        }
-        if (ToyUtil.isNotEmpty(item.getBizSystemIdStr())) {
-            String[] bizSystems = item.getBizSystemIdStr().split(CommConst.COMMA);
-            for (int i = 0; i < bizSystems.length; i++) {
-                BizSystemConfigItem bizSystemConfigItem = bizSystemService.findOne(Long.valueOf(bizSystems[i]));
-                if (bizSystemConfigItem != null) {
-                    list.add(bizSystemConfigItem);
-                }
-            }
-        }
-
-        //关系构造
-        list.forEach(innerItem -> {
+        if (ToyUtil.isNotEmpty(item.getConfigItemType())) {
+            AbstractConfigItem abstractConfigItem = commConfigItemService.getConfigItem(item.getConfigItemType(), item.getConfigItemId());
             PasswordForRelation passwordForRelation = new PasswordForRelation();
             passwordForRelation.setPasswordConfigItem(item);
-            passwordForRelation.setAbstractConfigItem(innerItem);
+            passwordForRelation.setAbstractConfigItem(abstractConfigItem);
             item.getPasswordForRelations().add(passwordForRelation);
-        });
+        }
+
         if (logger.isDebugEnabled()) {
             logger.debug("构造信息完成");
         }

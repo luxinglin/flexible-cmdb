@@ -7,6 +7,7 @@ import cn.pioneer.dcim.cmdb.neo4j.domain.relationship.NetworkLinkRelation;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,9 @@ public class NetworkConfigItem extends AbstractConfigItem implements Networkable
      */
     @Relationship(type = CiRelationConst.NETWORK_LINK)
     private List<NetworkLinkRelation> networks = new ArrayList<>();
+
+    @Transient
+    private String ownerIdStr;
 
     public String getSn() {
         return sn;
@@ -165,5 +169,13 @@ public class NetworkConfigItem extends AbstractConfigItem implements Networkable
 
     public void setNetworks(List<NetworkLinkRelation> networks) {
         this.networks = networks;
+    }
+
+    public String getOwnerIdStr() {
+        return ownerIdStr;
+    }
+
+    public void setOwnerIdStr(String ownerIdStr) {
+        this.ownerIdStr = ownerIdStr;
     }
 }

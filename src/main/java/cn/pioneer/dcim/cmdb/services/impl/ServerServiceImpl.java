@@ -56,15 +56,16 @@ public class ServerServiceImpl implements ConfigItemService<ServerConfigItem> {
                 NetworkLinkRelation networkLinkRelation = new NetworkLinkRelation();
                 networkLinkRelation.setNetwork(networkService.findOne(Long.valueOf(idArr[idx])));
                 networkLinkRelation.setLinkTarget(item);
+                item.getNetworks().add(networkLinkRelation);
             }
         }
         if (ToyUtil.isNotEmpty(item.getStorageIdStr())) {
             String[] idArr = item.getStorageIdStr().split(CommConst.COMMA);
             for (int idx = 0; idx < idArr.length; idx++) {
-                StorageLinkRelation networkLinkRelation = new StorageLinkRelation();
-                networkLinkRelation.setStorage(storageService.findOne(Long.valueOf(idArr[idx])));
-                networkLinkRelation.setServer(item);
-
+                StorageLinkRelation storageLinkRelation = new StorageLinkRelation();
+                storageLinkRelation.setStorage(storageService.findOne(Long.valueOf(idArr[idx])));
+                storageLinkRelation.setServer(item);
+                item.getStorages().add(storageLinkRelation);
             }
         }
 

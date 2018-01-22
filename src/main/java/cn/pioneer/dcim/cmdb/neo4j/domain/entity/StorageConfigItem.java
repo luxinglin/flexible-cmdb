@@ -5,6 +5,7 @@ import cn.pioneer.dcim.cmdb.neo4j.domain.AbstractConfigItem;
 import cn.pioneer.dcim.cmdb.neo4j.domain.relationship.StorageLinkRelation;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.Transient;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -69,6 +70,8 @@ public class StorageConfigItem extends AbstractConfigItem {
      */
     @Relationship(type = CiRelationConst.STORAGE_LINK)
     private Set<StorageLinkRelation> serverSet = new HashSet<>();
+    @Transient
+    private String ownerIdStr;
 
     public String getSn() {
         return sn;
@@ -172,5 +175,13 @@ public class StorageConfigItem extends AbstractConfigItem {
 
     public void setServerSet(Set<StorageLinkRelation> serverSet) {
         this.serverSet = serverSet;
+    }
+
+    public String getOwnerIdStr() {
+        return ownerIdStr;
+    }
+
+    public void setOwnerIdStr(String ownerIdStr) {
+        this.ownerIdStr = ownerIdStr;
     }
 }

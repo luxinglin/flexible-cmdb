@@ -69,7 +69,7 @@ public class PersonServiceImpl implements ConfigItemService<PersonConfigItem> {
 
     @Override
     public PersonConfigItem findOne(Long id) {
-        return null;
+        return this.personRepository.findOne(id);
     }
 
     @Override
